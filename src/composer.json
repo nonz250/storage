@@ -18,7 +18,8 @@
         "php": "^7.4|^8.0",
         "fig/http-message-util": "^1.1",
         "nyholm/psr7": "^1.5",
-        "league/route": "^5.1"
+        "league/route": "^5.1",
+        "laminas/laminas-diactoros": "^2.8"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",

@@ -8,6 +8,11 @@
             "Nonz250\\Storage\\App\\": "app/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "Nozomi Hosaka",

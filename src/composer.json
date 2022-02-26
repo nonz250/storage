@@ -20,6 +20,7 @@
         "nyholm/psr7": "^1.5"
     },
     "require-dev": {
+        "roave/security-advisories": "dev-latest",
         "phpunit/phpunit": "^9.5"
     }
 }

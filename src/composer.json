@@ -16,7 +16,8 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
-        "fig/http-message-util": "^1.1"
+        "fig/http-message-util": "^1.1",
+        "nyholm/psr7": "^1.5"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5"

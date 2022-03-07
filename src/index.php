@@ -46,6 +46,8 @@ if (Nonz250\Storage\App\Foundation\App::environment(Nonz250\Storage\App\Shared\V
                 $response->getBody()->write('<h1>Hello, World!</h1>');
                 return $response;
             });
+
+            $router->get('/action', Nonz250\Storage\App\Http\Test\TestAction::class);
         });
 }
 

@@ -25,7 +25,8 @@
         "league/route": "^5.1",
         "laminas/laminas-diactoros": "^2.8",
         "laminas/laminas-httphandlerrunner": "^2.1",
-        "vlucas/phpdotenv": "^5.4"
+        "vlucas/phpdotenv": "^5.4",
+        "crell/api-problem": "^3.6"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",

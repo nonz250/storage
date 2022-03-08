@@ -26,10 +26,16 @@ $request = Laminas\Diactoros\ServerRequestFactory::fromGlobals(
 );
 
 /**
+ * Dependency injection.
+ */
+$container = new League\Container\Container();
+
+/**
  * Setting router.
  */
 $responseFactory = new Laminas\Diactoros\ResponseFactory();
 $strategy = new League\Route\Strategy\JsonStrategy($responseFactory);
+$strategy->setContainer($container);
 $router = new League\Route\Router();
 
 if (Nonz250\Storage\App\Foundation\App::environment(Nonz250\Storage\App\Shared\ValueObject\Environment::LOCAL)) {
@@ -50,6 +56,15 @@ if (Nonz250\Storage\App\Foundation\App::environment(Nonz250\Storage\App\Shared\V
             $router->get('/action', Nonz250\Storage\App\Http\Test\TestAction::class);
         });
 }
+
+$router
+    ->get('/', static function (): array {
+        return [
+            'message' => 'test',
+        ];
+    })
+    ->middleware(new Nonz250\Storage\App\Http\Auth\AuthMiddleware)
+    ->setStrategy($strategy);
 
 $response = $router->dispatch($request);
 

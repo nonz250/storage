@@ -6,7 +6,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./src:/var/www/app:cached
+      - ./backend:/var/www/app:cached
       - ./infrastructure/nginx/default.conf:/etc/nginx/conf.d/default.conf:cached
     links:
       - app
@@ -19,7 +19,7 @@ services:
       context: ./infrastructure/php
       dockerfile: Dockerfile
     volumes:
-      - ./src:/var/www/app:cached
+      - ./backend:/var/www/app:cached
     working_dir: /var/www/app
 
   composer:
@@ -28,5 +28,5 @@ services:
       context: ./infrastructure/composer
       dockerfile: Dockerfile
     volumes:
-      - ./src:/src
-    working_dir: /src
+      - ./backend:/backend
+    working_dir: /backend

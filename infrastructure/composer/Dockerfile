@@ -1,5 +1,5 @@
 FROM composer:2
 
-WORKDIR /tmp
+WORKDIR /backend
 
 RUN composer --version

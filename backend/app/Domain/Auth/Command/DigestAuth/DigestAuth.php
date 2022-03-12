@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Nonz250\Storage\App\Domain\DigestAuth;
+namespace Nonz250\Storage\App\Domain\Auth\Command\DigestAuth;
 
 use Nonz250\Storage\App\Http\Auth\InvalidResponseException;
 

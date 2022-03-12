@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Nonz250\Storage\App\Http\Auth;
 
-use Nonz250\Storage\App\Domain\DigestAuth\DigestAuth;
-use Nonz250\Storage\App\Domain\DigestAuth\DigestAuthInput;
+use Nonz250\Storage\App\Domain\Auth\Command\DigestAuth\DigestAuth;
+use Nonz250\Storage\App\Domain\Auth\Command\DigestAuth\DigestAuthInput;
 use Nonz250\Storage\App\Foundation\Exceptions\HttpUnauthorizedException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

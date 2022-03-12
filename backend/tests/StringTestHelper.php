@@ -7,7 +7,7 @@ use Exception;
 
 class StringTestHelper
 {
-    private const DEFAULT_LENGTH = 20;
+    private const DEFAULT_LENGTH = 30;
 
     private const ALPHA_NUM_CHARS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -39,5 +39,18 @@ class StringTestHelper
         } catch (Exception $e) {
             die($e->getMessage());
         }
+    }
+
+    public static function randomEmail(int $length = self::DEFAULT_LENGTH): string
+    {
+        $at = '@';
+        $dot = '.';
+        $host = 'localhost';
+        $necessaryLength = $length - mb_strlen($at) - mb_strlen($dot);
+        $userNameLength = $necessaryLength % 2 === 1 ? ($necessaryLength - 1) / 2 : $necessaryLength / 2;
+        $domainLength = $necessaryLength - $userNameLength - mb_strlen($host);
+        $userName = self::random($userNameLength);
+        $domain = self::random($domainLength);
+        return $userName . $at . $domain . $dot . $host;
     }
 }

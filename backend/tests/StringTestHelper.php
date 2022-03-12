@@ -31,4 +31,13 @@ class StringTestHelper
     {
         return self::random($length, count($chars) ? $chars : self::MB4_CHARS);
     }
+
+    public static function randomByHex(int $length = self::DEFAULT_LENGTH): string
+    {
+        try {
+            return bin2hex(random_bytes((int)($length / 2)));
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
 }

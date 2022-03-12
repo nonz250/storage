@@ -8,7 +8,7 @@ use Nonz250\Storage\App\Foundation\ValueObject\StringValue;
 
 final class UserName extends StringValue
 {
-    public const MAX_LENGTH = 20;
+    public const MAX_LENGTH = 32;
 
     public function __construct(string $value)
     {

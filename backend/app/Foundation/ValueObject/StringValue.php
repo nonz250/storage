@@ -5,9 +5,8 @@ namespace Nonz250\Storage\App\Foundation\ValueObject;
 
 use Countable;
 use InvalidArgumentException;
-use Stringable;
 
-abstract class StringValue implements Stringable, Countable
+abstract class StringValue implements Countable
 {
     protected string $value;
 

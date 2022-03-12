@@ -12,6 +12,8 @@ services:
       - app
     depends_on:
       - app
+    networks:
+      internal-network:
 
   app:
     container_name: app
@@ -21,6 +23,25 @@ services:
     volumes:
       - ./backend:/var/www/app:cached
     working_dir: /var/www/app
+    networks:
+      internal-network:
+
+  db:
+    image: mysql:5.7
+    container_name: db
+    ports:
+      - "127.0.0.1:3306:3306"
+    environment:
+      TZ: Asia/Tokyo
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: storage
+    volumes:
+      - ./infrastructure/mysql/my.cnf:/etc/mysql/conf.d/mysql.cnf:ro
+      - ./infrastructure/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+      - storage-data:/var/lib/mysql:cache
+    stop_grace_period: 1m
+    networks:
+      internal-network:
 
   composer:
     container_name: composer
@@ -30,3 +51,11 @@ services:
     volumes:
       - ./backend:/backend
     working_dir: /backend
+
+networks:
+  internal-network:
+    driver: bridge
+
+volumes:
+  storage-data:
+    driver: local

@@ -5,7 +5,7 @@ setup:
 
 .PHONY: up
 up:
-	@docker compose up -d app web
+	@docker compose up -d app web db
 
 .PHONY: down
 down:

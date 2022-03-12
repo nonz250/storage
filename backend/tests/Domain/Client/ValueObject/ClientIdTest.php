@@ -18,6 +18,12 @@ class ClientIdTest extends TestCase
         return $clientId;
     }
 
+    public function testGenerate(): void
+    {
+        $clientId = ClientId::generate();
+        $this->assertSame(ClientId::LENGTH, $clientId->count());
+    }
+
     public function testRequiredException(): void
     {
         $this->expectException(InvalidArgumentException::class);

@@ -8,7 +8,7 @@ use Nonz250\Storage\App\Foundation\ValueObject\StringValue;
 
 final class UserName extends StringValue
 {
-    public const MAX_LENGTH = 32;
+    public const LENGTH = 32;
 
     public function __construct(string $value)
     {
@@ -21,9 +21,9 @@ final class UserName extends StringValue
         if ($value === '') {
             throw new InvalidArgumentException(sprintf('%s is required.', __CLASS__));
         }
-        if (mb_strlen($value) > self::MAX_LENGTH) {
+        if (mb_strlen($value) !== self::LENGTH) {
             throw new InvalidArgumentException(
-                sprintf('%s must be less than %s chars.', __CLASS__, self::MAX_LENGTH)
+                sprintf('%s must be %s chars.', __CLASS__, self::LENGTH)
             );
         }
     }

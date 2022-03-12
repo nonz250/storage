@@ -12,7 +12,7 @@ class UserNameTest extends TestCase
 {
     public function test__construct(): UserName
     {
-        $expected = StringTestHelper::randomByMb4();
+        $expected = StringTestHelper::random(UserName::LENGTH);
         $userName = new UserName($expected);
         $this->assertSame($expected, (string)$userName);
         return $userName;
@@ -28,7 +28,7 @@ class UserNameTest extends TestCase
     public function testMaxLengthException(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $expected = StringTestHelper::randomByMb4(UserName::MAX_LENGTH + 1);
+        $expected = StringTestHelper::random(UserName::LENGTH + 1);
         new UserName($expected);
     }
 }

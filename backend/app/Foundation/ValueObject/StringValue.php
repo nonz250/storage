@@ -3,18 +3,24 @@ declare(strict_types=1);
 
 namespace Nonz250\Storage\App\Foundation\ValueObject;
 
+use Countable;
 use InvalidArgumentException;
 use Stringable;
 
-abstract class StringValue implements Stringable
+abstract class StringValue implements Stringable, Countable
 {
     protected string $value;
 
     abstract public function __construct(string $value);
 
+    public function count(): int
+    {
+        return mb_strlen($this->value);
+    }
+
     public function isEmpty(): bool
     {
-        return true;
+        return $this->count() === 0;
     }
 
     public function __toString(): string

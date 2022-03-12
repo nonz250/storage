@@ -24,6 +24,7 @@ class AuthMiddleware implements MiddlewareInterface
             // TODO: ログ記録
             return $e->getApiProblemResponse();
         }
+
         try {
             try {
                 $input = new DigestAuthInput($digests[0], $request->getMethod());

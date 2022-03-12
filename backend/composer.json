@@ -21,6 +21,7 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
+        "ext-json": "*",
         "fig/http-message-util": "^1.1",
         "league/route": "^5.1",
         "laminas/laminas-diactoros": "^2.8",

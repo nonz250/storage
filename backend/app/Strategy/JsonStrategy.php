@@ -31,7 +31,7 @@ final class JsonStrategy extends \League\Route\Strategy\JsonStrategy
             ): ResponseInterface {
                 $detail = '';
                 if ($this->exception instanceof NotFoundException) {
-                    $detail = 'test';
+                    $detail = 'Nothing route.';
                 }
                 $responseFactory = new ResponseFactory();
                 $converter = new HttpConverter($responseFactory, true);

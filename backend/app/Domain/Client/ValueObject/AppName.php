@@ -9,6 +9,7 @@ use Nonz250\Storage\App\Foundation\ValueObject\StringValue;
 final class AppName extends StringValue
 {
     public const MAX_LENGTH = 20;
+    private const NAME = 'appName';
 
     public function __construct(string $value)
     {
@@ -19,10 +20,10 @@ final class AppName extends StringValue
     protected function validate(string $value): void
     {
         if ($value === '') {
-            throw new InvalidArgumentException(sprintf('%s is required.', __CLASS__));
+            throw new InvalidArgumentException(sprintf('%s is required.', self::NAME));
         }
         if (mb_strlen($value) > self::MAX_LENGTH) {
-            throw new InvalidArgumentException(sprintf('%s must be less than %s chars.', __CLASS__, self::MAX_LENGTH));
+            throw new InvalidArgumentException(sprintf('%s must be less than %s chars.', self::NAME, self::MAX_LENGTH));
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Nonz250\Storage\App\Domain\User\ValueObject;
 use InvalidArgumentException;
 use Nonz250\Storage\App\Foundation\ValueObject\StringValue;
 
-final class UserPassword extends StringValue
+final class ClientSecret extends StringValue
 {
     public const LENGTH = 64;
 

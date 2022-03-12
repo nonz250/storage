@@ -4,38 +4,38 @@ declare(strict_types=1);
 namespace Tests\Domain\User\ValueObject;
 
 use InvalidArgumentException;
-use Nonz250\Storage\App\Domain\User\ValueObject\UserName;
+use Nonz250\Storage\App\Domain\User\ValueObject\ClientId;
 use PHPUnit\Framework\TestCase;
 use Tests\StringTestHelper;
 
-class UserNameTest extends TestCase
+class ClientIdTest extends TestCase
 {
-    public function test__construct(): UserName
+    public function test__construct(): ClientId
     {
-        $expected = StringTestHelper::randomByHex(UserName::LENGTH);
-        $userName = new UserName($expected);
-        $this->assertSame($expected, (string)$userName);
-        return $userName;
+        $expected = StringTestHelper::randomByHex(ClientId::LENGTH);
+        $clientId = new ClientId($expected);
+        $this->assertSame($expected, (string)$clientId);
+        return $clientId;
     }
 
     public function testRequiredException(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $expected = '';
-        new UserName($expected);
+        new ClientId($expected);
     }
 
     public function testLengthException(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $expected = StringTestHelper::randomByHex(UserName::LENGTH + 2);
-        new UserName($expected);
+        $expected = StringTestHelper::randomByHex(ClientId::LENGTH + 2);
+        new ClientId($expected);
     }
 
     public function testHexException(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $expected = StringTestHelper::random(UserName::LENGTH);
-        new UserName($expected);
+        $expected = StringTestHelper::random(ClientId::LENGTH);
+        new ClientId($expected);
     }
 }

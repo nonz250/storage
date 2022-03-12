@@ -8,14 +8,10 @@ use Nonz250\Storage\App\Domain\Client\ValueObject\ClientEmail;
 
 final class CreateClientInput implements CreateClientInputPort
 {
-    private string $appName;
-    private string $clientEmail;
+    private AppName $appName;
+    private ClientEmail $clientEmail;
 
-    /**
-     * @param string $appName
-     * @param string $clientEmail
-     */
-    public function __construct(string $appName, string $clientEmail)
+    public function __construct(AppName $appName, ClientEmail $clientEmail)
     {
         $this->appName = $appName;
         $this->clientEmail = $clientEmail;
@@ -23,11 +19,11 @@ final class CreateClientInput implements CreateClientInputPort
 
     public function appName(): AppName
     {
-        return new AppName($this->appName);
+        return $this->appName;
     }
 
     public function clientEmail(): ClientEmail
     {
-        return new ClientEmail($this->clientEmail);
+        return $this->clientEmail;
     }
 }

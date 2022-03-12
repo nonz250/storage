@@ -18,7 +18,7 @@ class AuthMiddleware implements MiddlewareInterface
         try {
             $digests = $request->getHeader('Authorization') ?? [];
             if (count($digests) === 0) {
-                throw new HttpUnauthorizedException();
+                throw new HttpUnauthorizedException('Please set `Authorization` header.');
             }
         } catch (HttpUnauthorizedException $e) {
             // TODO: ログ記録
@@ -31,7 +31,7 @@ class AuthMiddleware implements MiddlewareInterface
                 (new DigestAuth())->process($input);
             } catch (InvalidResponseException $e) {
                 // TODO: ログ記録
-                throw new HttpUnauthorizedException();
+                throw new HttpUnauthorizedException('Please check user.');
             }
         } catch (HttpUnauthorizedException $e) {
             // TODO: ログ記録

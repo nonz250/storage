@@ -29,6 +29,7 @@ $request = Laminas\Diactoros\ServerRequestFactory::fromGlobals(
  * Dependency injection.
  */
 $container = new League\Container\Container();
+$container->addServiceProvider(new Nonz250\Storage\App\Provider\ActionServiceProvider);
 
 /**
  * Setting router.
@@ -37,7 +38,9 @@ $responseFactory = new Laminas\Diactoros\ResponseFactory();
 $strategy = new League\Route\Strategy\JsonStrategy($responseFactory);
 $strategy->setContainer($container);
 $router = new League\Route\Router();
+$router->middleware(new Nonz250\Storage\App\Http\ParseRequest\ParseRequestMiddleware);
 
+// Local routing for testing.
 if (Nonz250\Storage\App\Foundation\App::environment(Nonz250\Storage\App\Shared\ValueObject\Environment::LOCAL)) {
     $router
         ->group('test', static function (League\Route\RouteGroup $router) use ($strategy) {
@@ -57,14 +60,25 @@ if (Nonz250\Storage\App\Foundation\App::environment(Nonz250\Storage\App\Shared\V
         });
 }
 
+// Production routing.
 $router
-    ->get('/', static function (): array {
-        return [
-            'message' => 'test',
-        ];
+    ->group('/', static function (League\Route\RouteGroup $router) {
+        $router->get('/', static function (): array {
+            return [
+                'message' => 'test',
+            ];
+        });
     })
     ->middleware(new Nonz250\Storage\App\Http\Auth\AuthMiddleware)
     ->setStrategy($strategy);
+
+$router
+    ->group('/', static function (League\Route\RouteGroup $router) {
+        $router->post('/clients', Nonz250\Storage\App\Http\CreateClient\CreateClientAction::class);
+    })
+    ->middleware(new Nonz250\Storage\App\Http\Auth\AuthMiddleware)
+    ->setStrategy($strategy);
+
 
 $response = $router->dispatch($request);
 

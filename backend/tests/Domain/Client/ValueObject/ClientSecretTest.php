@@ -18,6 +18,12 @@ class ClientSecretTest extends TestCase
         return $clientSecret;
     }
 
+    public function testGenerate(): void
+    {
+        $clientSecret = ClientSecret::generate();
+        $this->assertSame(ClientSecret::LENGTH, $clientSecret->count());
+    }
+
     public function testRequiredException(): void
     {
         $this->expectException(InvalidArgumentException::class);

@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace Nonz250\Storage\App\Domain\Client\ValueObject;
 
+use Exception;
 use InvalidArgumentException;
 use Nonz250\Storage\App\Foundation\ValueObject\StringValue;
+use RuntimeException;
 
 final class ClientSecret extends StringValue
 {
@@ -14,6 +16,16 @@ final class ClientSecret extends StringValue
     {
         $this->validate($value);
         $this->value = $value;
+    }
+
+    public static function generate(): self
+    {
+        try {
+            $randoms = bin2hex(random_bytes(self::LENGTH / 2));
+        } catch (Exception $e) {
+            throw new RuntimeException('An appropriate source of randomness cannot be found.', 0, $e);
+        }
+        return new self($randoms);
     }
 
     protected function validate(string $value): void

@@ -12,7 +12,7 @@ class UserNameTest extends TestCase
 {
     public function test__construct(): UserName
     {
-        $expected = StringTestHelper::random(UserName::LENGTH);
+        $expected = StringTestHelper::randomByHex(UserName::LENGTH);
         $userName = new UserName($expected);
         $this->assertSame($expected, (string)$userName);
         return $userName;
@@ -25,10 +25,17 @@ class UserNameTest extends TestCase
         new UserName($expected);
     }
 
-    public function testMaxLengthException(): void
+    public function testLengthException(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $expected = StringTestHelper::random(UserName::LENGTH + 1);
+        $expected = StringTestHelper::randomByHex(UserName::LENGTH + 2);
+        new UserName($expected);
+    }
+
+    public function testHexException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $expected = StringTestHelper::random(UserName::LENGTH);
         new UserName($expected);
     }
 }

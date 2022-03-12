@@ -21,6 +21,9 @@ final class UserName extends StringValue
         if ($value === '') {
             throw new InvalidArgumentException(sprintf('%s is required.', __CLASS__));
         }
+        if (!ctype_xdigit($value)) {
+            throw new InvalidArgumentException(sprintf('%s must be hex character only.', __CLASS__));
+        }
         if (mb_strlen($value) !== self::LENGTH) {
             throw new InvalidArgumentException(
                 sprintf('%s must be %s chars.', __CLASS__, self::LENGTH)

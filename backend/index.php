@@ -35,7 +35,7 @@ $container->addServiceProvider(new Nonz250\Storage\App\Provider\ActionServicePro
  * Setting router.
  */
 $responseFactory = new Laminas\Diactoros\ResponseFactory();
-$strategy = new League\Route\Strategy\JsonStrategy($responseFactory);
+$strategy = new Nonz250\Storage\App\Strategy\JsonStrategy($responseFactory);
 $strategy->setContainer($container);
 $router = new League\Route\Router();
 $router->middleware(new Nonz250\Storage\App\Http\ParseRequest\ParseRequestMiddleware);
@@ -61,17 +61,6 @@ if (Nonz250\Storage\App\Foundation\App::environment(Nonz250\Storage\App\Shared\V
 }
 
 // Production routing.
-$router
-    ->group('/', static function (League\Route\RouteGroup $router) {
-        $router->get('/', static function (): array {
-            return [
-                'message' => 'test',
-            ];
-        });
-    })
-    ->middleware(new Nonz250\Storage\App\Http\Auth\AuthMiddleware)
-    ->setStrategy($strategy);
-
 $router
     ->group('/', static function (League\Route\RouteGroup $router) {
         $router->post('/clients', Nonz250\Storage\App\Http\CreateClient\CreateClientAction::class);

@@ -68,7 +68,6 @@ $router
     ->middleware(new Nonz250\Storage\App\Http\Auth\AuthMiddleware)
     ->setStrategy($strategy);
 
-
 $response = $router->dispatch($request);
 
 (new Laminas\HttpHandlerRunner\Emitter\SapiEmitter)->emit($response);

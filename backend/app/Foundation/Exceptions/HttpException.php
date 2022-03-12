@@ -14,11 +14,18 @@ use Throwable;
 class HttpException extends RuntimeException implements HttpExceptionInterface
 {
     private int $statusCode;
+    private string $description;
 
-    public function __construct(int $statusCode = StatusCodeInterface::STATUS_OK, $message = '', $code = 0, Throwable $previous = null)
-    {
+    public function __construct(
+        int $statusCode = StatusCodeInterface::STATUS_OK,
+        $description = '',
+        $message = '',
+        $code = 0,
+        Throwable $previous = null
+    ) {
         parent::__construct($message, $code, $previous);
         $this->statusCode = $statusCode;
+        $this->description = $description;
     }
 
     public function getStatusCode(): int
@@ -26,14 +33,14 @@ class HttpException extends RuntimeException implements HttpExceptionInterface
         return $this->statusCode;
     }
 
-    public function getApiProblemResponse(string $detail = ''): ResponseInterface
+    public function getApiProblemResponse(): ResponseInterface
     {
         $responseFactory = new ResponseFactory();
         $converter = new HttpConverter($responseFactory, true);
         $problem = new ApiProblem($this->getMessage());
         $problem
             ->setStatus($this->getStatusCode())
-            ->setDetail($detail);
+            ->setDetail($this->description);
         return $converter->toJsonResponse($problem);
     }
 }

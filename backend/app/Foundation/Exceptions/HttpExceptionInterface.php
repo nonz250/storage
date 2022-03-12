@@ -9,5 +9,5 @@ interface HttpExceptionInterface
 {
     public function getStatusCode(): int;
 
-    public function getApiProblemResponse(string $detail = ''): ResponseInterface;
+    public function getApiProblemResponse(): ResponseInterface;
 }

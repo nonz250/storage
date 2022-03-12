@@ -20,7 +20,7 @@
         }
     ],
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^7.4",
         "ext-json": "*",
         "ext-mbstring": "*",
         "crell/api-problem": "^3.6",
@@ -34,5 +34,10 @@
     "require-dev": {
         "roave/security-advisories": "dev-latest",
         "phpunit/phpunit": "^9.5"
+    },
+    "config": {
+        "platform": {
+            "php": "7.4"
+        }
     }
 }

@@ -1,0 +1,8 @@
+<?php
+declare(strict_types=1);
+
+include_once 'vendor/autoload.php';
+
+$application = new Symfony\Component\Console\Application('Storage Commands.', '0.0.1');
+
+$application->run();

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\Domain\User\ValueObject;
+namespace Tests\Domain\Client\ValueObject;
 
 use InvalidArgumentException;
-use Nonz250\Storage\App\Domain\User\ValueObject\ClientSecret;
+use Nonz250\Storage\App\Domain\Client\ValueObject\ClientSecret;
 use PHPUnit\Framework\TestCase;
 use Tests\StringTestHelper;
 

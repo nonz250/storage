@@ -1,0 +1,34 @@
+<?php
+declare(strict_types=1);
+
+namespace Tests;
+
+use Exception;
+
+class StringTestHelper
+{
+    private const DEFAULT_LENGTH = 20;
+
+    private const ALPHA_NUM_CHARS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    private const MB4_CHARS = ['あ', 'い', 'う', 'え', 'お', '😀', '😃', '😄', '😁', '😆'];
+
+    public static function random(int $length = self::DEFAULT_LENGTH, array $chars = []): string
+    {
+        try {
+            $result = '';
+            $baseChars = count($chars) ? $chars : self::ALPHA_NUM_CHARS;
+            for ($i = 0; $i < $length; $i++) {
+                $result .= $baseChars[random_int(0, count($baseChars) - 1)];
+            }
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+        return $result;
+    }
+
+    public static function randomByMb4(int $length = self::DEFAULT_LENGTH, array $chars = []): string
+    {
+        return self::random($length, count($chars) ? $chars : self::MB4_CHARS);
+    }
+}

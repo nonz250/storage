@@ -18,4 +18,6 @@ interface DigestAuthInputPort
     public function response(): string;
 
     public function method(): string;
+
+    public function nonce(): string;
 }

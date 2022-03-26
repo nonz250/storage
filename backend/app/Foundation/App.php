@@ -18,4 +18,9 @@ final class App
     {
         return $_ENV[$key] ?? $default;
     }
+
+    public static function migrationTable(): string
+    {
+        return self::env('MIGRATIONS_TABLE', 'migrations');
+    }
 }

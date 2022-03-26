@@ -19,4 +19,9 @@ class AppTest extends TestCase
     {
         $this->assertSame((string)$_ENV['APP_ENV'], App::env('APP_ENV'));
     }
+
+    public function testGetMigrationTable(): void
+    {
+        $this->assertIsString(App::migrationTable());
+    }
 }

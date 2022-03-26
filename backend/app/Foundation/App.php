@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Nonz250\Storage\App\Foundation;
 
-class App
+final class App
 {
     /**
      * @param string $environment
@@ -12,5 +12,10 @@ class App
     public static function environment(string $environment): bool
     {
         return $_ENV['APP_ENV'] === $environment;
+    }
+
+    public static function env(string $key, $default = '')
+    {
+        return $_ENV[$key] ?? $default;
     }
 }

@@ -18,35 +18,33 @@ final class MigrationCommand extends Command
     protected static $defaultName = 'migrate';
     protected static $defaultDescription = 'DB migration for MySQL.';
 
-    private MigrationRepositoryInterface $migrationRepository;
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // モデルの生成
         $dsn = sprintf('mysql:dbname=%s;host=%s;port=%s', App::env('DB_NAME'), App::env('DB_HOST'), App::env('DB_PORT'));
         $model = new Model(new PDO($dsn, App::env('DB_USERNAME'), App::env('DB_PASSWORD')));
-        $this->migrationRepository = new MigrationRepository($model);
+        $migrationRepository = new MigrationRepository($model);
 
         try {
             $model->beginTransaction();
 
             try {
                 // `migrations`テーブルの存在チェック
-                $this->migrationRepository->findAll();
+                $migrationRepository->findAll();
             } catch (PDOException $e) {
                 // `migrations`テーブルが無ければ作成する
-                $this->migrationRepository->createMigrateTable();
+                $migrationRepository->createMigrateTable();
             }
 
             // 最新のstepを取得
-            $latest = $this->migrationRepository->findLatest();
+            $latest = $migrationRepository->findLatest();
             $step = array_key_exists('step', $latest) ? $latest['step'] + 1 : 1;
 
             // 対象のファイルを全て取得
             $files = glob(self::MIGRATION_DIRECTORY . '*.sql');
             foreach ($files as $file) {
                 $fileName = basename($file);
-                $migration = $this->migrationRepository->findByFileName($fileName);
+                $migration = $migrationRepository->findByFileName($fileName);
                 if ($migration) {
                     continue;
                 }
@@ -59,7 +57,7 @@ final class MigrationCommand extends Command
 
                 $model->execute($sql);
 
-                $this->migrationRepository->create($fileName, $step);
+                $migrationRepository->create($fileName, $step);
 
                 $output->writeln(sprintf('Migrated %s.', basename($file)));
             }
@@ -71,11 +69,6 @@ final class MigrationCommand extends Command
             $model->rollBack();
             throw $e;
         }
-
-
-        // `migrations`テーブルの存在チェック
-        // `migrations`テーブルの存在チェック
-        // `migrations`テーブルの存在チェック
 
         return Command::SUCCESS;
     }

@@ -29,7 +29,20 @@ $request = Laminas\Diactoros\ServerRequestFactory::fromGlobals(
  * Dependency injection.
  */
 $container = new League\Container\Container();
-$container->addServiceProvider(new Nonz250\Storage\App\Provider\ActionServiceProvider);
+$container->add(PDO::class)
+    ->addArgument(sprintf(
+        'mysql:dbname=%s;host=%s;port=%s',
+        Nonz250\Storage\App\Foundation\App::env('DB_NAME'),
+        Nonz250\Storage\App\Foundation\App::env('DB_HOST'),
+        Nonz250\Storage\App\Foundation\App::env('DB_PORT')
+    ))
+    ->addArgument(Nonz250\Storage\App\Foundation\App::env('DB_USERNAME'))
+    ->addArgument(Nonz250\Storage\App\Foundation\App::env('DB_PASSWORD'));
+
+$container->add(Nonz250\Storage\App\Foundation\Model\Model::class)
+    ->addArgument(PDO::class);
+
+$container->addServiceProvider(new Nonz250\Storage\App\Provider\ClientServiceProvider);
 
 /**
  * Setting router.
@@ -65,7 +78,7 @@ $router
     ->group('/', static function (League\Route\RouteGroup $router) {
         $router->post('/clients', Nonz250\Storage\App\Http\CreateClient\CreateClientAction::class);
     })
-    ->middleware(new Nonz250\Storage\App\Http\Auth\AuthMiddleware)
+    ->middleware($container->get(Nonz250\Storage\App\Http\Auth\AuthMiddleware::class))
     ->setStrategy($strategy);
 
 $response = $router->dispatch($request);

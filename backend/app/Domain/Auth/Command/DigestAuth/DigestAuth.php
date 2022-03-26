@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Nonz250\Storage\App\Domain\Auth\Command\DigestAuth;
 
+use Nonz250\Storage\App\Domain\Auth\ClientRepositoryInterface;
+use Nonz250\Storage\App\Domain\Client\ValueObject\ClientId;
 use Nonz250\Storage\App\Http\Auth\InvalidResponseException;
 
 class DigestAuth implements DigestAuthInterface
@@ -10,13 +12,19 @@ class DigestAuth implements DigestAuthInterface
     private const REALM = 'Secret Zone';
     private const SHA_256 = 'sha256';
 
+    private ClientRepositoryInterface $clientRepository;
+
+    public function __construct(ClientRepositoryInterface $clientRepository)
+    {
+        $this->clientRepository = $clientRepository;
+    }
+
     public function process(DigestAuthInputPort $inputPort): void
     {
-        // TODO: DBからユーザー情報取得
-        $userName = 'user';
-        $password = 'pass';
-        // TODO: シークレットキー取得
-        $nonce = 'nonce';
+        $client = $this->clientRepository->findById(new ClientId($inputPort->userName()));
+        $userName = (string)$client->clientId();
+        $password = (string)$client->clientSecret();
+        $nonce = $inputPort->nonce();
 
         // @see https://tex2e.github.io/rfc-translater/html/rfc7616.html
         $A1 = hash(self::SHA_256, "$userName:" . self::REALM . ":$password");

@@ -56,4 +56,16 @@ class BindValuesTest extends TestCase
         $bindValues->bindValue($expectedKey1, $expectedValue1);
         $bindValues->bindValue($expectedKey1, $expectedValue2);
     }
+
+    /**
+     * @depends test__construct
+     * @param BindValues $bindValues
+     * @return void
+     */
+    public function testIterator(BindValues $bindValues): void
+    {
+        foreach ($bindValues as $bindKey => $bindValue) {
+            $this->assertIsString($bindKey);
+        }
+    }
 }

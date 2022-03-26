@@ -28,6 +28,11 @@ final class BindValues implements IteratorAggregate
         }
     }
 
+    public function isEmpty(): bool
+    {
+        return count($this->values) === 0;
+    }
+
     public function toArray(): array
     {
         return $this->values;

@@ -32,7 +32,15 @@ class BindValuesTest extends TestCase
             $expectedKey3 => $expectedValue3,
         ], $bindValues->toArray());
 
+        $this->assertFalse($bindValues->isEmpty());
+
         return $bindValues;
+    }
+
+    public function testIsEmpty(): void
+    {
+        $bindValues = new BindValues();
+        $this->assertTrue($bindValues->isEmpty());
     }
 
     public function testKeyRequiredException(): void

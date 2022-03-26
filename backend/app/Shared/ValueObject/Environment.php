@@ -8,5 +8,6 @@ use Nonz250\Storage\App\Foundation\ValueObject\Enum;
 class Environment extends Enum
 {
     public const LOCAL = 'local';
+    public const TESTING = 'testing';
     public const PRODUCTION = 'production';
 }

@@ -23,6 +23,7 @@
         "php": "^7.4",
         "ext-json": "*",
         "ext-mbstring": "*",
+        "ext-pdo": "*",
         "crell/api-problem": "^3.6",
         "fig/http-message-util": "^1.1",
         "laminas/laminas-diactoros": "^2.8",

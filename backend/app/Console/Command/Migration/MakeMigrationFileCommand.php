@@ -15,6 +15,7 @@ final class MakeMigrationFileCommand extends Command
     private const FILE_DATE_FORMAT = 'YmdHisv';
     private const FILE_EXTENSION = 'sql';
     private const MIGRATION_DIRECTORY = 'database/migrations/';
+
     protected static $defaultName = 'make:migration';
     protected static $defaultDescription = 'Make migration file.';
 

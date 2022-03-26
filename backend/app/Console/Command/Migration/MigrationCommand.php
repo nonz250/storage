@@ -24,21 +24,20 @@ final class MigrationCommand extends Command
         $dsn = sprintf('mysql:dbname=%s;host=%s;port=%s', App::env('DB_NAME'), App::env('DB_HOST'), App::env('DB_PORT'));
         $model = new Model(new PDO($dsn, App::env('DB_USERNAME'), App::env('DB_PASSWORD')));
         $migrationRepository = new MigrationRepository($model);
+        $step = 1;
 
         try {
             $model->beginTransaction();
 
             try {
                 // `migrations`テーブルの存在チェック
-                $migrationRepository->findAll();
+                $latest = $migrationRepository->findLatest();
+                // 最新のstepを取得
+                $step = array_key_exists('step', $latest) ? $latest['step'] + 1 : $step;
             } catch (PDOException $e) {
                 // `migrations`テーブルが無ければ作成する
                 $migrationRepository->createMigrateTable();
             }
-
-            // 最新のstepを取得
-            $latest = $migrationRepository->findLatest();
-            $step = array_key_exists('step', $latest) ? $latest['step'] + 1 : 1;
 
             // 対象のファイルを全て取得
             $files = glob(self::MIGRATION_DIRECTORY . '*.sql');

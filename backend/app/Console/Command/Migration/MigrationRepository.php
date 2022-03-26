@@ -28,12 +28,6 @@ class MigrationRepository implements MigrationRepositoryInterface
         $this->model->execute($sql);
     }
 
-    public function findAll(): array
-    {
-        $sql = sprintf('SELECT * FROM %s', App::migrationTable());
-        return $this->model->select($sql);
-    }
-
     public function findLatest(): array
     {
         $sql = sprintf('SELECT * FROM %s ORDER BY step DESC LIMIT 1', App::migrationTable());

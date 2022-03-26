@@ -7,8 +7,6 @@ interface MigrationRepositoryInterface
 {
     public function createMigrateTable(): void;
 
-    public function findAll(): array;
-
     public function findLatest(): array;
 
     public function findByFileName(string $fileName): array;

@@ -13,8 +13,7 @@ down:
 
 .PHONY: test
 test:
-	@docker compose exec app php -version
-	@docker compose exec app php-cs-fixer fix
+	@make fix
 	@docker compose exec app ./vendor/bin/phpunit
 
 .PHONY: prod

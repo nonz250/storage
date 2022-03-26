@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Nonz250\Storage\App\Console\Command;
+namespace Nonz250\Storage\App\Console\Command\Migration;
 
 use DateTimeImmutable;
 use Symfony\Component\Console\Command\Command;

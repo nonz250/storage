@@ -5,6 +5,6 @@ include_once 'vendor/autoload.php';
 
 $application = new Symfony\Component\Console\Application('Storage Commands.', '0.0.1');
 
-$application->add(new Nonz250\Storage\App\Console\Command\MakeMigrationFileCommand);
+$application->add(new Nonz250\Storage\App\Console\Command\Migration\MakeMigrationFileCommand);
 
 $application->run();

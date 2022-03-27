@@ -58,4 +58,16 @@ class MigrationRepository implements MigrationRepositoryInterface
         $bindValues->bindValue(':step', $step);
         $this->model->insert($sql, $bindValues);
     }
+
+    public function fresh(string $databaseName): void
+    {
+        $sql = 'SELECT * FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA` = :table';
+        $bindValues = new BindValues();
+        $bindValues->bindValue(':table', $databaseName);
+        $schemas = $this->model->select($sql, $bindValues);
+        foreach ($schemas as $schema) {
+            $sql = "DROP TABLE IF EXISTS {$schema['TABLE_NAME']}";
+            $this->model->execute($sql);
+        }
+    }
 }

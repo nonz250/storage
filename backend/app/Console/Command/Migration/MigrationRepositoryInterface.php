@@ -12,4 +12,6 @@ interface MigrationRepositoryInterface
     public function findByFileName(string $fileName): array;
 
     public function create(string $fileName, int $step): void;
+
+    public function fresh(string $databaseName): void;
 }

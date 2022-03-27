@@ -13,6 +13,7 @@ $application = new Symfony\Component\Console\Application('Storage Commands.', '0
 
 $application->add(new Nonz250\Storage\App\Console\Command\Migration\MakeMigrationFileCommand);
 $application->add(new Nonz250\Storage\App\Console\Command\Migration\MigrationCommand);
+$application->add(new Nonz250\Storage\App\Console\Command\Migration\MigrationFreshCommand);
 $application->add(new Nonz250\Storage\App\Console\Command\Client\CreateClientCommand);
 
 $application->run();

@@ -23,7 +23,7 @@ class ImageTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $expected = '';
-        new FileName($expected);
+        new Image($expected);
     }
 
     public function testMaxLengthException(): void

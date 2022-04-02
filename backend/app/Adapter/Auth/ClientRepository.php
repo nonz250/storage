@@ -29,7 +29,7 @@ class ClientRepository implements ClientRepositoryInterface
         $bindValues->bindValue(':client_id', (string)$clientId);
         $clients = $this->model->select($sql, $bindValues);
         if (count($clients) === 0) {
-            throw new DataNotFoundException();
+            throw new DataNotFoundException(sprintf('%s is not found.', ClientId::NAME));
         }
         $client = $clients[0];
         return new Client(

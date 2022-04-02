@@ -21,6 +21,7 @@
     ],
     "require": {
         "php": "^7.4",
+        "ext-fileinfo": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
         "ext-pdo": "*",
@@ -31,7 +32,8 @@
         "league/container": "^4.2",
         "league/route": "^5.1",
         "vlucas/phpdotenv": "^5.4",
-        "symfony/console": "^5.4"
+        "symfony/console": "^5.4",
+        "symfony/uid": "^5.4"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",

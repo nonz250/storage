@@ -11,6 +11,9 @@ use Nonz250\Storage\App\Domain\Client\Command\CreateClient\CreateClientInterface
 use Nonz250\Storage\App\Domain\Client\ValueObject\AppName;
 use Nonz250\Storage\App\Domain\Client\ValueObject\ClientEmail;
 use Nonz250\Storage\App\Foundation\Exceptions\HttpBadRequestException;
+use Nonz250\Storage\App\Foundation\Exceptions\HttpException;
+use Nonz250\Storage\App\Foundation\Exceptions\HttpInternalErrorException;
+use PDOException;
 use Psr\Http\Message\ResponseInterface;
 
 class CreateClientAction
@@ -34,13 +37,21 @@ class CreateClientAction
                 // TODO: ログ記録
                 throw new HttpBadRequestException($e->getMessage());
             }
-        } catch (HttpBadRequestException $e) {
+        } catch (HttpException $e) {
             return $e->getApiProblemResponse();
         }
 
-        $input = new CreateClientInput($appName, $clientEmail);
-        $array = $this->createClient->process($input);
+        try {
+            try {
+                $input = new CreateClientInput($appName, $clientEmail);
+                $client = $this->createClient->process($input);
+            } catch (PDOException $e) {
+                throw new HttpInternalErrorException('Failed create client.');
+            }
+        } catch (HttpException $e) {
+            return $e->getApiProblemResponse();
+        }
 
-        return new JsonResponse($array);
+        return new JsonResponse($client);
     }
 }

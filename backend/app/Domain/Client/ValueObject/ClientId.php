@@ -11,7 +11,7 @@ use RuntimeException;
 final class ClientId extends StringValue
 {
     public const LENGTH = 32;
-    private const NAME = 'Username';
+    public const NAME = 'Username';
 
     public function __construct(string $value)
     {

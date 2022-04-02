@@ -53,4 +53,13 @@ class StringTestHelper
         $domain = self::random($domainLength);
         return $userName . $at . $domain . $dot . $host;
     }
+
+    public static function randomFast(int $length = self::DEFAULT_LENGTH): string
+    {
+        try {
+            return mb_substr(bin2hex(random_bytes($length)), 0, $length);
+        } catch (Exception $e) {
+            return '';
+        }
+    }
 }

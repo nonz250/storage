@@ -43,6 +43,7 @@ $container->add(Nonz250\Storage\App\Foundation\Model\Model::class)
     ->addArgument(PDO::class);
 
 $container->addServiceProvider(new Nonz250\Storage\App\Provider\ClientServiceProvider);
+$container->addServiceProvider(new Nonz250\Storage\App\Provider\FileServiceProvider);
 
 /**
  * Setting router.
@@ -77,6 +78,7 @@ if (Nonz250\Storage\App\Foundation\App::environment(Nonz250\Storage\App\Shared\V
 $router
     ->group('/', static function (League\Route\RouteGroup $router) {
         $router->post('/clients', Nonz250\Storage\App\Http\CreateClient\CreateClientAction::class);
+        $router->post('/files', Nonz250\Storage\App\Http\UploadFile\UploadFileAction::class);
     })
     ->middleware($container->get(Nonz250\Storage\App\Http\Auth\AuthMiddleware::class))
     ->setStrategy($strategy);

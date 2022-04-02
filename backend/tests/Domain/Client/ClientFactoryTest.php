@@ -22,11 +22,11 @@ class ClientFactoryTest extends TestCase
     }
 
     /**
-     * @depends
+     * @depends test__construct
      * @param ClientFactoryInterface $clientFactory
      * @return void
      */
-    public function newClient(ClientFactoryInterface $clientFactory): void
+    public function testNewClient(ClientFactoryInterface $clientFactory): void
     {
         $appName = StringTestHelper::randomByMb4(AppName::MAX_LENGTH);
         $clientEmail = StringTestHelper::randomEmail();

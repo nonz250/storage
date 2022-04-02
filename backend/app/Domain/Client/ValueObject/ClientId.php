@@ -23,9 +23,11 @@ final class ClientId extends StringValue
     {
         try {
             $randoms = bin2hex(random_bytes(self::LENGTH / 2));
+            // @codeCoverageIgnoreStart
         } catch (Exception $e) {
             throw new RuntimeException('An appropriate source of randomness cannot be found.', 0, $e);
         }
+        // @codeCoverageIgnoreEnd
         return new self($randoms);
     }
 

@@ -23,4 +23,11 @@ class ClientEmailTest extends TestCase
         $expected = '';
         new ClientEmail($expected);
     }
+
+    public function testFormatException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $expected = StringTestHelper::random();
+        new ClientEmail($expected);
+    }
 }

@@ -25,6 +25,27 @@
         <include>
             <directory suffix=".php">app</directory>
         </include>
+        <exclude>
+            <!-- TODO: Model / Repository testing -->
+            <file>app/Adapter/Auth/ClientRepository.php</file>
+            <!-- TODO: Commands testing -->
+            <directory suffix=".php">app/Console/Command</directory>
+            <!-- TODO: Exceptions testing -->
+            <directory suffix=".php">app/Foundation/Exceptions</directory>
+            <!-- TODO: Digest Auth testing -->
+            <directory suffix=".php">app/Domain/Auth</directory>
+            <!-- TODO: Domain testing -->
+            <file>app/Domain/Client/Command/CreateClient/CreateClient.php</file>
+            <!-- TODO: Action testing -->
+            <file>app/Http/CreateClient/CreateClientAction.php</file>
+            <!-- Unnecessary testing -->
+            <directory suffix=".php">app/Provider</directory>
+            <directory suffix=".php">app/Http/Auth</directory>
+            <directory suffix=".php">app/Http/ParseRequest</directory>
+            <directory suffix=".php">app/Http/Test</directory>
+            <directory suffix=".php">app/Strategy</directory>
+            <file>app/Foundation/Model/Model.php</file>
+        </exclude>
     </coverage>
 
     <php>

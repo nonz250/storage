@@ -14,4 +14,6 @@ interface MigrationRepositoryInterface
     public function create(string $fileName, int $step): void;
 
     public function fresh(string $databaseName): void;
+
+    public function setForeignKeyChecks(bool $enable): void;
 }

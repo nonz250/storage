@@ -65,9 +65,19 @@ class MigrationRepository implements MigrationRepositoryInterface
         $bindValues = new BindValues();
         $bindValues->bindValue(':table', $databaseName);
         $schemas = $this->model->select($sql, $bindValues);
+        $this->setForeignKeyChecks(false);
         foreach ($schemas as $schema) {
             $sql = "DROP TABLE IF EXISTS {$schema['TABLE_NAME']}";
             $this->model->execute($sql);
         }
+        $this->setForeignKeyChecks(true);
+    }
+
+    public function setForeignKeyChecks(bool $enable): void
+    {
+        $sql = $enable
+            ? 'SET FOREIGN_KEY_CHECKS = 1'
+            : 'SET FOREIGN_KEY_CHECKS = 0';
+        $this->model->execute($sql);
     }
 }

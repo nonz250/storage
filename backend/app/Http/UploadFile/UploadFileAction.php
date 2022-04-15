@@ -15,6 +15,7 @@ use Nonz250\Storage\App\Foundation\Exceptions\Base64Exception;
 use Nonz250\Storage\App\Foundation\Exceptions\HttpBadRequestException;
 use Nonz250\Storage\App\Foundation\Exceptions\HttpException;
 use Nonz250\Storage\App\Foundation\Exceptions\HttpInternalErrorException;
+use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
@@ -40,6 +41,7 @@ class UploadFileAction
                 $file = new Image($fileDecoded);
 
                 $fileName = new FileName($requestBody['fileName'] ?? '');
+                $clientId = new ClientId((string)$requestBody['client_id']);
             } catch (InvalidArgumentException $e) {
                 // TODO: ログ記録
                 throw new HttpBadRequestException($e->getMessage());
@@ -53,7 +55,7 @@ class UploadFileAction
 
         try {
             try {
-                $input = new UploadImageInput($fileName, $file);
+                $input = new UploadImageInput($clientId, $fileName, $file);
                 $file = $this->uploadImage->process($input);
             } catch (MimeTypeException $e) {
                 throw new HttpBadRequestException('Invalid mimetype.');

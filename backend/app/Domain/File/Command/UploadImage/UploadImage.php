@@ -22,7 +22,7 @@ final class UploadImage implements UploadImageInterface
 
     public function process(UploadImageInputPort $inputPort): File
     {
-        $file = $this->fileFactory->newImageFile($inputPort->fileName(), $inputPort->image());
+        $file = $this->fileFactory->newImageFile($inputPort->clientId(), $inputPort->fileName(), $inputPort->image());
 
         $uploadDirectory = getcwd() . DIRECTORY_SEPARATOR . self::UPLOAD_DIRECTORY;
 

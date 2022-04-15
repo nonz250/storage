@@ -10,16 +10,19 @@ use Nonz250\Storage\App\Domain\File\ValueObject\FileIdentifier;
 use Nonz250\Storage\App\Domain\File\ValueObject\FileName;
 use Nonz250\Storage\App\Domain\File\ValueObject\Image;
 use Nonz250\Storage\App\Domain\File\ValueObject\MimeType;
+use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 
 final class File
 {
     private FileIdentifier $fileIdentifier;
+    private ClientId $clientId;
     private FileName $fileName;
     private Image $image;
 
-    public function __construct(FileIdentifier $fileIdentifier, FileName $fileName, Image $image)
+    public function __construct(FileIdentifier $fileIdentifier, ClientId $clientId, FileName $fileName, Image $image)
     {
         $this->fileIdentifier = $fileIdentifier;
+        $this->clientId = $clientId;
         $this->fileName = $fileName;
         $this->image = $image;
     }
@@ -27,6 +30,11 @@ final class File
     public function identifier(): FileIdentifier
     {
         return $this->fileIdentifier;
+    }
+
+    public function clientId(): ClientId
+    {
+        return $this->clientId;
     }
 
     public function fileName(): FileName

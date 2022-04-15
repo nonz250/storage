@@ -6,12 +6,13 @@ namespace Nonz250\Storage\App\Domain\File;
 use Nonz250\Storage\App\Domain\File\ValueObject\FileIdentifier;
 use Nonz250\Storage\App\Domain\File\ValueObject\FileName;
 use Nonz250\Storage\App\Domain\File\ValueObject\Image;
+use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 use Symfony\Component\Uid\Ulid;
 
 final class FileFactory implements FileFactoryInterface
 {
-    public function newImageFile(FileName $fileName, Image $image): File
+    public function newImageFile(ClientId $clientId, FileName $fileName, Image $image): File
     {
-        return new File(new FileIdentifier(Ulid::generate()), $fileName, $image);
+        return new File(new FileIdentifier(Ulid::generate()), $clientId, $fileName, $image);
     }
 }

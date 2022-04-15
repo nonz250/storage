@@ -13,7 +13,7 @@ use Nonz250\Storage\App\Foundation\Exceptions\DataNotFoundException;
 use Nonz250\Storage\App\Foundation\Model\BindValues;
 use Nonz250\Storage\App\Foundation\Model\Model;
 
-class ClientRepository implements ClientRepositoryInterface
+final class ClientRepository implements ClientRepositoryInterface
 {
     private Model $model;
 

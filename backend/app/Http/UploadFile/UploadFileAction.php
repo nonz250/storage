@@ -17,14 +17,19 @@ use Nonz250\Storage\App\Foundation\Exceptions\HttpException;
 use Nonz250\Storage\App\Foundation\Exceptions\HttpInternalErrorException;
 use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 use Throwable;
 
 class UploadFileAction
 {
+    private LoggerInterface $logger;
     private UploadImageInterface $uploadImage;
 
-    public function __construct(UploadImageInterface $uploadImage)
-    {
+    public function __construct(
+        LoggerInterface $logger,
+        UploadImageInterface $uploadImage
+    ) {
+        $this->logger = $logger;
         $this->uploadImage = $uploadImage;
     }
 
@@ -43,10 +48,10 @@ class UploadFileAction
                 $fileName = new FileName($requestBody['fileName'] ?? '');
                 $clientId = new ClientId((string)$requestBody['client_id']);
             } catch (InvalidArgumentException $e) {
-                // TODO: ログ記録
+                $this->logger->error($e);
                 throw new HttpBadRequestException($e->getMessage());
             } catch (Base64Exception $e) {
-                // TODO: ログ記録
+                $this->logger->error($e);
                 throw new HttpInternalErrorException($e->getMessage());
             }
         } catch (HttpException $e) {

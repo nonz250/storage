@@ -8,19 +8,23 @@ use Nonz250\Storage\App\Domain\File\File;
 use Nonz250\Storage\App\Domain\File\FileFactoryInterface;
 use Nonz250\Storage\App\Domain\File\FileRepositoryInterface;
 use PDOException;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 
 final class UploadImage implements UploadImageInterface
 {
     private const UPLOAD_DIRECTORY = 'storage';
 
+    private LoggerInterface $logger;
     private FileFactoryInterface $fileFactory;
     private FileRepositoryInterface $fileRepository;
 
     public function __construct(
+        LoggerInterface $logger,
         FileFactoryInterface $fileFactory,
         FileRepositoryInterface $fileRepository
     ) {
+        $this->logger = $logger;
         $this->fileFactory = $fileFactory;
         $this->fileRepository = $fileRepository;
     }
@@ -46,7 +50,7 @@ final class UploadImage implements UploadImageInterface
             throw new UploadFileException('Failed to upload file.');
         }
 
-        // TODO: ファイルの容量をログに記録
+        $this->logger->info(sprintf('%s is %s bytes.', $file->fullFileName(), $byte));
 
         return $file;
     }

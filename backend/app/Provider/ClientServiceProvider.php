@@ -15,6 +15,7 @@ use Nonz250\Storage\App\Domain\Client\Command\CreateClient\CreateClientInterface
 use Nonz250\Storage\App\Foundation\Model\Model;
 use Nonz250\Storage\App\Http\Auth\AuthMiddleware;
 use Nonz250\Storage\App\Http\CreateClient\CreateClientAction;
+use Psr\Log\LoggerInterface;
 
 class ClientServiceProvider extends AbstractServiceProvider
 {
@@ -39,11 +40,17 @@ class ClientServiceProvider extends AbstractServiceProvider
 
         $this->getContainer()
             ->add(AuthMiddleware::class)
-            ->addArgument(DigestAuthInterface::class);
+            ->addArguments([
+                LoggerInterface::class,
+                DigestAuthInterface::class,
+            ]);
 
         $this->getContainer()
             ->add(CreateClientAction::class)
-            ->addArgument(CreateClientInterface::class);
+            ->addArguments([
+                LoggerInterface::class,
+                CreateClientInterface::class,
+            ]);
 
         $this->getContainer()
             ->add(ClientFactoryInterface::class, ClientFactory::class);

@@ -12,6 +12,7 @@ use Nonz250\Storage\App\Domain\File\FileFactoryInterface;
 use Nonz250\Storage\App\Domain\File\FileRepositoryInterface;
 use Nonz250\Storage\App\Foundation\Model\Model;
 use Nonz250\Storage\App\Http\UploadFile\UploadFileAction;
+use Psr\Log\LoggerInterface;
 
 class FileServiceProvider extends AbstractServiceProvider
 {
@@ -31,14 +32,20 @@ class FileServiceProvider extends AbstractServiceProvider
 
         $this->getContainer()
             ->add(UploadFileAction::class)
-            ->addArgument(UploadImageInterface::class);
+            ->addArguments([
+                LoggerInterface::class,
+                UploadImageInterface::class,
+            ]);
 
         $this->getContainer()
             ->add(FileFactoryInterface::class, FileFactory::class);
 
         $this->getContainer()
             ->add(UploadImageInterface::class, UploadImage::class)
-            ->addArgument(FileFactoryInterface::class)
-            ->addArgument(FileRepositoryInterface::class);
+            ->addArguments([
+                LoggerInterface::class,
+                FileFactoryInterface::class,
+                FileRepositoryInterface::class,
+            ]);
     }
 }

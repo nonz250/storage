@@ -15,14 +15,18 @@ use Nonz250\Storage\App\Foundation\Exceptions\HttpException;
 use Nonz250\Storage\App\Foundation\Exceptions\HttpInternalErrorException;
 use PDOException;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 
 class CreateClientAction
 {
+    private LoggerInterface $logger;
     private CreateClientInterface $createClient;
 
     public function __construct(
+        LoggerInterface $logger,
         CreateClientInterface $createClient
     ) {
+        $this->logger = $logger;
         $this->createClient = $createClient;
     }
 
@@ -34,7 +38,7 @@ class CreateClientAction
                 $appName = new AppName($data['appName'] ?? '');
                 $clientEmail = new ClientEmail($data['email'] ?? '');
             } catch (InvalidArgumentException $e) {
-                // TODO: ログ記録
+                $this->logger->error($e);
                 throw new HttpBadRequestException($e->getMessage());
             }
         } catch (HttpException $e) {
@@ -46,9 +50,11 @@ class CreateClientAction
                 $input = new CreateClientInput($appName, $clientEmail);
                 $client = $this->createClient->process($input);
             } catch (PDOException $e) {
+                $this->logger->error($e);
                 throw new HttpInternalErrorException('Failed create client.');
             }
         } catch (HttpException $e) {
+            $this->logger->error($e);
             return $e->getApiProblemResponse();
         }
 

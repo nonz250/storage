@@ -16,14 +16,19 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerInterface;
 use Throwable;
 
 class AuthMiddleware implements MiddlewareInterface
 {
+    private LoggerInterface $logger;
     private DigestAuthInterface $digestAuth;
 
-    public function __construct(DigestAuthInterface $digestAuth)
-    {
+    public function __construct(
+        LoggerInterface $logger,
+        DigestAuthInterface $digestAuth
+    ) {
+        $this->logger = $logger;
         $this->digestAuth = $digestAuth;
     }
 
@@ -35,7 +40,7 @@ class AuthMiddleware implements MiddlewareInterface
                 throw new HttpUnauthorizedException('Please set `Authorization` header.');
             }
         } catch (HttpUnauthorizedException $e) {
-            // TODO: ログ記録
+            $this->logger->error($e);
             return $e->getApiProblemResponse();
         }
 
@@ -44,17 +49,17 @@ class AuthMiddleware implements MiddlewareInterface
                 $input = new DigestAuthInput($digests[0], $request->getMethod(), App::env('DIGEST_NONCE'));
                 $this->digestAuth->process($input);
             } catch (InvalidArgumentException | DataNotFoundException $e) {
-                // TODO: ログ記録
+                $this->logger->error($e);
                 throw new HttpBadRequestException($e->getMessage());
             } catch (InvalidResponseException $e) {
-                // TODO: ログ記録
+                $this->logger->error($e);
                 throw new HttpUnauthorizedException('Please check user.');
             } catch (Throwable $e) {
-                // TODO: ログ記録
+                $this->logger->error($e);
                 throw new HttpInternalErrorException($e->getMessage());
             }
         } catch (HttpException $e) {
-            // TODO: ログ記録
+            $this->logger->error($e);
             return $e->getApiProblemResponse();
         }
 

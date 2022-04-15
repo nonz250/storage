@@ -9,9 +9,17 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerInterface;
 
 class ParseRequestMiddleware implements MiddlewareInterface
 {
+    private LoggerInterface $logger;
+
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         try {
@@ -27,12 +35,13 @@ class ParseRequestMiddleware implements MiddlewareInterface
                 }
 
                 $contents = $request->getBody()->getContents();
+                $this->logger->info($contents);
                 $parsedBody = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
             } catch (EmptyContentTypeException|InvalidContentTypeException $e) {
-                // TODO: ログ記録
+                $this->logger->error($e);
                 throw new HttpBadRequestException($e->getMessage());
             } catch (JsonException $e) {
-                // TODO: ログ記録
+                $this->logger->error($e);
                 throw new HttpBadRequestException('Json syntax error.');
             }
         } catch (HttpBadRequestException $e) {

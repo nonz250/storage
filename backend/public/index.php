@@ -42,6 +42,21 @@ $container->add(PDO::class)
 $container->add(Nonz250\Storage\App\Foundation\Model\Model::class)
     ->addArgument(PDO::class);
 
+$container->add(Psr\Log\LoggerInterface::class, Monolog\Logger::class)
+    ->addArgument('storage')
+    ->addMethodCall('pushHandler', [
+        (new Monolog\Handler\RotatingFileHandler(
+            sprintf('%s/../logs/application.log', __DIR__),
+            30,
+            Nonz250\Storage\App\Foundation\App::environment(Nonz250\Storage\App\Shared\ValueObject\Environment::PRODUCTION)
+                ? Monolog\Logger::INFO
+                : Monolog\Logger::DEBUG,
+        ))->setFormatter(new Monolog\Formatter\JsonFormatter()),
+    ]);
+
+$container->add(Nonz250\Storage\App\Http\ParseRequest\ParseRequestMiddleware::class)
+    ->addArgument(Psr\Log\LoggerInterface::class);
+
 $container->addServiceProvider(new Nonz250\Storage\App\Provider\ClientServiceProvider);
 $container->addServiceProvider(new Nonz250\Storage\App\Provider\FileServiceProvider);
 
@@ -52,7 +67,7 @@ $responseFactory = new Laminas\Diactoros\ResponseFactory();
 $strategy = new Nonz250\Storage\App\Strategy\JsonStrategy($responseFactory);
 $strategy->setContainer($container);
 $router = new League\Route\Router();
-$router->middleware(new Nonz250\Storage\App\Http\ParseRequest\ParseRequestMiddleware);
+$router->middleware($container->get(Nonz250\Storage\App\Http\ParseRequest\ParseRequestMiddleware::class));
 
 // Local routing for testing.
 if (Nonz250\Storage\App\Foundation\App::environment(Nonz250\Storage\App\Shared\ValueObject\Environment::LOCAL)) {

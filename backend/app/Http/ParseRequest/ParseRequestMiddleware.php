@@ -39,7 +39,7 @@ class ParseRequestMiddleware implements MiddlewareInterface
             return $e->getApiProblemResponse();
         }
 
-        $request = $request->withParsedBody($parsedBody);
+        $request = $request->withParsedBody(array_merge($request->getParsedBody(), $parsedBody));
 
         return $handler->handle($request);
     }

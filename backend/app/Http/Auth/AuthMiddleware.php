@@ -58,6 +58,10 @@ class AuthMiddleware implements MiddlewareInterface
             return $e->getApiProblemResponse();
         }
 
+        $request = $request->withParsedBody(array_merge($request->getParsedBody(), [
+            'client_id' => $input->userName(),
+        ]));
+
         return $handler->handle($request);
     }
 }

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-include_once 'vendor/autoload.php';
+include_once '../vendor/autoload.php';
 
 /**
  * Load dotenv.
  */
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
 /**

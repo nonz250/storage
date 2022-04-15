@@ -1,3 +1,5 @@
+ROOT_PATH := /var/www/app
+
 .PHONY: setup
 setup:
 	@docker compose build
@@ -26,3 +28,7 @@ prod:
 fix:
 	@docker compose exec app php -version
 	@docker compose exec app php-cs-fixer fix
+
+.PHONY: link
+link:
+	@docker compose exec app ln -fs $(ROOT_PATH)/storage public/storage

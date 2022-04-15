@@ -1,5 +1,4 @@
 /vendor/
-/storage/
 
 .env
 .php_cs.cache

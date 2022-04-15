@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Nonz250\Storage\App\Domain\Auth\Command\DigestAuth;
 
 use Nonz250\Storage\App\Domain\Auth\ClientRepositoryInterface;
-use Nonz250\Storage\App\Domain\Client\ValueObject\ClientId;
 use Nonz250\Storage\App\Http\Auth\InvalidResponseException;
+use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 
 class DigestAuth implements DigestAuthInterface
 {

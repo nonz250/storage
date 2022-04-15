@@ -5,8 +5,8 @@ namespace Nonz250\Storage\App\Domain\Client;
 
 use Nonz250\Storage\App\Domain\Client\ValueObject\AppName;
 use Nonz250\Storage\App\Domain\Client\ValueObject\ClientEmail;
-use Nonz250\Storage\App\Domain\Client\ValueObject\ClientId;
 use Nonz250\Storage\App\Domain\Client\ValueObject\ClientSecret;
+use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 
 class ClientFactory implements ClientFactoryInterface
 {

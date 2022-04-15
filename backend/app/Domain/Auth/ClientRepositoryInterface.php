@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Nonz250\Storage\App\Domain\Auth;
 
 use Nonz250\Storage\App\Domain\Client\Client;
-use Nonz250\Storage\App\Domain\Client\ValueObject\ClientId;
+use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 
 interface ClientRepositoryInterface
 {

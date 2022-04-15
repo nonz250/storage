@@ -7,8 +7,8 @@ use Nonz250\Storage\App\Domain\Client\ClientFactory;
 use Nonz250\Storage\App\Domain\Client\ClientFactoryInterface;
 use Nonz250\Storage\App\Domain\Client\ValueObject\AppName;
 use Nonz250\Storage\App\Domain\Client\ValueObject\ClientEmail;
-use Nonz250\Storage\App\Domain\Client\ValueObject\ClientId;
 use Nonz250\Storage\App\Domain\Client\ValueObject\ClientSecret;
+use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 use PHPUnit\Framework\TestCase;
 use Tests\StringTestHelper;
 

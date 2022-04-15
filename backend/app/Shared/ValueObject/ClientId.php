@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Nonz250\Storage\App\Domain\Client\ValueObject;
+namespace Nonz250\Storage\App\Shared\ValueObject;
 
 use Exception;
 use InvalidArgumentException;

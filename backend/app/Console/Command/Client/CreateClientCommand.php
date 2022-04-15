@@ -5,11 +5,11 @@ namespace Nonz250\Storage\App\Console\Command\Client;
 
 use Nonz250\Storage\App\Domain\Client\ValueObject\AppName;
 use Nonz250\Storage\App\Domain\Client\ValueObject\ClientEmail;
-use Nonz250\Storage\App\Domain\Client\ValueObject\ClientId;
 use Nonz250\Storage\App\Domain\Client\ValueObject\ClientSecret;
 use Nonz250\Storage\App\Foundation\App;
 use Nonz250\Storage\App\Foundation\Model\BindValues;
 use Nonz250\Storage\App\Foundation\Model\Model;
+use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 use PDO;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

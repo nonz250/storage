@@ -7,11 +7,11 @@ use Nonz250\Storage\App\Domain\Auth\ClientRepositoryInterface;
 use Nonz250\Storage\App\Domain\Client\Client;
 use Nonz250\Storage\App\Domain\Client\ValueObject\AppName;
 use Nonz250\Storage\App\Domain\Client\ValueObject\ClientEmail;
-use Nonz250\Storage\App\Domain\Client\ValueObject\ClientId;
 use Nonz250\Storage\App\Domain\Client\ValueObject\ClientSecret;
 use Nonz250\Storage\App\Foundation\Exceptions\DataNotFoundException;
 use Nonz250\Storage\App\Foundation\Model\BindValues;
 use Nonz250\Storage\App\Foundation\Model\Model;
+use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 
 final class ClientRepository implements ClientRepositoryInterface
 {

@@ -35,7 +35,6 @@ class ParseRequestMiddleware implements MiddlewareInterface
                 }
 
                 $contents = $request->getBody()->getContents();
-                $this->logger->info($contents);
                 $parsedBody = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
             } catch (EmptyContentTypeException|InvalidContentTypeException $e) {
                 $this->logger->error($e);

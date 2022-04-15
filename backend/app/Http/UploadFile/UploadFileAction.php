@@ -68,6 +68,7 @@ class UploadFileAction
 
         return new JsonResponse([
             'message' => 'Successfully created file.',
+            'id' => (string)$file->identifier(),
             'originFileName' => $file->fullFileName(),
             'fileName' => $file->fullUniqueFileName(),
             'url' => sprintf('%s/storage/%s', $_SERVER['HTTP_HOST'], $file->fullUniqueFileName()),

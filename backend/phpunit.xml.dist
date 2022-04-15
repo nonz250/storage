@@ -28,6 +28,7 @@
         <exclude>
             <!-- TODO: Model / Repository testing -->
             <file>app/Adapter/Auth/ClientRepository.php</file>
+            <file>app/Adapter/File/FileRepository.php</file>
             <!-- TODO: Commands testing -->
             <directory suffix=".php">app/Console/Command</directory>
             <!-- TODO: Exceptions testing -->

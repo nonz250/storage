@@ -70,7 +70,7 @@ class UploadFileAction
             'message' => 'Successfully created file.',
             'originFileName' => $file->fullFileName(),
             'fileName' => $file->fullUniqueFileName(),
-            'url' => sprintf('%s/%s', $_SERVER['HTTP_HOST'], $file->fullUniqueFileName()),
+            'url' => sprintf('%s/storage/%s', $_SERVER['HTTP_HOST'], $file->fullUniqueFileName()),
         ]);
     }
 }

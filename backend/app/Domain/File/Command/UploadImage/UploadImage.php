@@ -6,6 +6,8 @@ namespace Nonz250\Storage\App\Domain\File\Command\UploadImage;
 use Nonz250\Storage\App\Domain\File\Exceptions\UploadFileException;
 use Nonz250\Storage\App\Domain\File\File;
 use Nonz250\Storage\App\Domain\File\FileFactoryInterface;
+use Nonz250\Storage\App\Domain\File\FileRepositoryInterface;
+use PDOException;
 use RuntimeException;
 
 final class UploadImage implements UploadImageInterface
@@ -13,16 +15,25 @@ final class UploadImage implements UploadImageInterface
     private const UPLOAD_DIRECTORY = 'storage';
 
     private FileFactoryInterface $fileFactory;
+    private FileRepositoryInterface $fileRepository;
 
     public function __construct(
-        FileFactoryInterface $fileFactory
+        FileFactoryInterface $fileFactory,
+        FileRepositoryInterface $fileRepository
     ) {
         $this->fileFactory = $fileFactory;
+        $this->fileRepository = $fileRepository;
     }
 
     public function process(UploadImageInputPort $inputPort): File
     {
         $file = $this->fileFactory->newImageFile($inputPort->clientId(), $inputPort->fileName(), $inputPort->image());
+
+        try {
+            $this->fileRepository->create($file);
+        } catch (PDOException $e) {
+            throw new UploadFileException('Failed to register database.');
+        }
 
         $uploadDirectory = getcwd() . DIRECTORY_SEPARATOR . self::UPLOAD_DIRECTORY;
 
@@ -34,8 +45,9 @@ final class UploadImage implements UploadImageInterface
         if ($byte === false) {
             throw new UploadFileException('Failed to upload file.');
         }
+
         // TODO: ファイルの容量をログに記録
-        // TODO: ファイルの情報をDBに永続化
+
         return $file;
     }
 }

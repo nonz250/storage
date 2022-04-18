@@ -8,21 +8,40 @@ ARG PHP_MANUAL_URL=http://psysh.org/manual/ja/php_manual.sqlite
 
 RUN set -eux && \
     apk update && \
-    apk add --update --no-cache --virtual=.build-dependencies \
+    apk add --no-cache \
+        freetype \
+        libjpeg-turbo \
+        libjpeg-turbo-utils \
+        libpng \
+        libwebp \
+        libxpm \
+        oniguruma-dev \
+        icu-dev \
+        && \
+    apk add --no-cache --virtual=.build-dependencies \
         autoconf \
+        freetype-dev \
+        libjpeg-turbo-dev \
+        libpng-dev \
+        libwebp-dev \
+        libxpm-dev \
         gcc \
         g++ \
         make \
-        tzdata && \
-    apk add --update --no-cache \
-        oniguruma-dev \
-        icu-dev && \
+        tzdata \
+        && \
     cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
     echo ${TZ} > /etc/timezone && \
     pecl install xdebug && \
-    apk del .build-dependencies && \
-    docker-php-ext-install intl mbstring pdo_mysql && \
+    docker-php-ext-configure gd \
+        --with-freetype \
+        --with-jpeg \
+        --with-webp \
+        --with-xpm \
+        && \
+    docker-php-ext-install -j$(nproc) intl mbstring pdo_mysql gd && \
     docker-php-ext-enable xdebug && \
+    apk del .build-dependencies && \
     mkdir $PSYSH_DIR && wget $PHP_MANUAL_URL -P $PSYSH_DIR
 
 RUN curl -L https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v3.1.0/php-cs-fixer.phar -o php-cs-fixer && \

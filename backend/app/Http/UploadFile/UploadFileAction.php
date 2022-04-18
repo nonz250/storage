@@ -75,8 +75,9 @@ class UploadFileAction
             'message' => 'Successfully created file.',
             'id' => (string)$file->identifier(),
             'originFileName' => $file->fullFileName(),
+            'originUrl' => sprintf('%s/storage/origin/%s', $_SERVER['HTTP_HOST'], $file->fullUniqueFileName()),
             'fileName' => $file->fullUniqueFileName(),
-            'url' => sprintf('%s/storage/%s', $_SERVER['HTTP_HOST'], $file->fullUniqueFileName()),
+            'thumbnailUrl' => sprintf('%s/storage/thumbnail/%s', $_SERVER['HTTP_HOST'], $file->fullUniqueFileName()),
         ]);
     }
 }

@@ -13,9 +13,9 @@ use Nonz250\Storage\App\Domain\Client\ValueObject\ClientEmail;
 use Nonz250\Storage\App\Foundation\Exceptions\HttpBadRequestException;
 use Nonz250\Storage\App\Foundation\Exceptions\HttpException;
 use Nonz250\Storage\App\Foundation\Exceptions\HttpInternalErrorException;
-use PDOException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 class CreateClientAction
 {
@@ -49,9 +49,9 @@ class CreateClientAction
             try {
                 $input = new CreateClientInput($appName, $clientEmail);
                 $client = $this->createClient->process($input);
-            } catch (PDOException $e) {
+            } catch (Throwable $e) {
                 $this->logger->error($e);
-                throw new HttpInternalErrorException('Failed create client.');
+                throw new HttpInternalErrorException('Failed to create client.');
             }
         } catch (HttpException $e) {
             $this->logger->error($e);

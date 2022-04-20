@@ -5,6 +5,8 @@ namespace Nonz250\Storage\App\Domain\Client\Command\CreateClient;
 
 use Nonz250\Storage\App\Domain\Auth\ClientRepositoryInterface;
 use Nonz250\Storage\App\Domain\Client\ClientFactoryInterface;
+use Nonz250\Storage\App\Domain\Client\Exceptions\CreateClientException;
+use Throwable;
 
 final class CreateClient implements CreateClientInterface
 {
@@ -22,7 +24,15 @@ final class CreateClient implements CreateClientInterface
     public function process(CreateClientInputPort $inputPort): array
     {
         $client = $this->clientFactory->newClient($inputPort->appName(), $inputPort->clientEmail());
-        $this->clientRepository->create($client);
+
+        try {
+            $this->clientRepository->beginTransaction();
+            $this->clientRepository->create($client);
+            $this->clientRepository->commit();
+        } catch (Throwable $e) {
+            $this->clientRepository->rollback();
+            throw new CreateClientException('Failed to create client.');
+        }
         return [
             'clientId' => (string)$client->clientId(),
             'clientSecret' => (string)$client->clientSecret(),

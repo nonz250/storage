@@ -6,17 +6,10 @@ namespace Nonz250\Storage\App\Adapter\File;
 use Nonz250\Storage\App\Domain\File\File;
 use Nonz250\Storage\App\Domain\File\FileRepositoryInterface;
 use Nonz250\Storage\App\Foundation\Model\BindValues;
-use Nonz250\Storage\App\Foundation\Model\Model;
+use Nonz250\Storage\App\Foundation\Repository;
 
-final class FileRepository implements FileRepositoryInterface
+final class FileRepository extends Repository implements FileRepositoryInterface
 {
-    private Model $model;
-
-    public function __construct(Model $model)
-    {
-        $this->model = $model;
-    }
-
     public function create(File $file): void
     {
         $sql = 'INSERT INTO `files` (`id`, `client_id`, `name`, `origin_mimetype`, `thumbnail_mimetype`) VALUES (:id, :client_id, :name, :origin_mimetype, :thumbnail_mimetype)';

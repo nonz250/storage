@@ -9,8 +9,8 @@ use Nonz250\Storage\App\Domain\File\FileFactoryInterface;
 use Nonz250\Storage\App\Domain\File\FileRepositoryInterface;
 use Nonz250\Storage\App\Domain\File\FileService;
 use Nonz250\Storage\App\Domain\File\FileServiceInterface;
-use PDOException;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 final class UploadImage implements UploadImageInterface
 {
@@ -39,17 +39,36 @@ final class UploadImage implements UploadImageInterface
         $file->changeThumbnailMimeType($inputPort->mimeType());
 
         try {
+            $this->fileRepository->beginTransaction();
             $this->fileRepository->create($file);
-        } catch (PDOException $e) {
+        } catch (Throwable $e) {
+            $this->fileRepository->rollback();
             $this->logger->error($e);
             throw new UploadFileException('Failed to register database.');
         }
 
-        $originFilePath = $this->fileService->uploadOriginImage($file);
-        $this->logger->debug($originFilePath);
+        try {
+            $originFilePath = $this->fileService->uploadOriginImage($file);
+            $this->logger->debug($originFilePath);
+        } catch (Throwable $e) {
+            $this->fileRepository->rollback();
+            $this->logger->error($e);
+            throw new UploadFileException('Failed to upload origin file.');
+        }
 
-        $thumbnailFilePath = $this->fileService->uploadThumbnailImage($file);
-        $this->logger->debug($thumbnailFilePath);
+        try {
+            $thumbnailFilePath = $this->fileService->uploadThumbnailImage($file);
+            $this->logger->debug($thumbnailFilePath);
+        } catch (Throwable $e) {
+            $this->fileRepository->rollback();
+            if (!unlink($originFilePath)) {
+                $this->logger->error(sprintf('Failed to delete origin file. -- %s', $originFilePath));
+            }
+            $this->logger->error($e);
+            throw new UploadFileException('Failed to upload thumbnail file.');
+        }
+
+        $this->fileRepository->commit();
 
         return new UploadImageOutput(
             $file->identifier(),

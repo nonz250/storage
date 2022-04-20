@@ -10,18 +10,11 @@ use Nonz250\Storage\App\Domain\Client\ValueObject\ClientEmail;
 use Nonz250\Storage\App\Domain\Client\ValueObject\ClientSecret;
 use Nonz250\Storage\App\Foundation\Exceptions\DataNotFoundException;
 use Nonz250\Storage\App\Foundation\Model\BindValues;
-use Nonz250\Storage\App\Foundation\Model\Model;
+use Nonz250\Storage\App\Foundation\Repository;
 use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 
-final class ClientRepository implements ClientRepositoryInterface
+final class ClientRepository extends Repository implements ClientRepositoryInterface
 {
-    private Model $model;
-
-    public function __construct(Model $model)
-    {
-        $this->model = $model;
-    }
-
     public function findById(ClientId $clientId): Client
     {
         $sql = 'SELECT * FROM `clients` WHERE id = :client_id';

@@ -38,6 +38,7 @@
             <!-- TODO: Domain testing -->
             <file>app/Domain/Client/Command/CreateClient/CreateClient.php</file>
             <file>app/Domain/File/Command/UploadImage/UploadImage.php</file>
+            <file>app/Domain/File/FileService.php</file>
             <!-- TODO: Action testing -->
             <file>app/Http/CreateClient/CreateClientAction.php</file>
             <file>app/Http/UploadFile/UploadFileAction.php</file>

@@ -29,6 +29,9 @@ class FileTest extends TestCase
         $this->assertSame(MimeType::MIME_TYPE_PNG, (string)$file->mimeType());
         $this->assertSame($fileName . $file->mimeType()->extension(), $file->fullFileName());
         $this->assertSame($fileIdentifier . $file->mimeType()->extension(), $file->fullUniqueFileName());
+        $mimeType = new MimeType(MimeType::MIME_TYPE_WEBP);
+
+        $this->assertSame($fileIdentifier . $mimeType->extension(), $file->fullUniqueFileName($mimeType));
         return $file;
     }
 

@@ -9,6 +9,7 @@ use Laminas\Diactoros\ServerRequest;
 use Nonz250\Storage\App\Adapter\File\Command\UploadImage\UploadImageInput;
 use Nonz250\Storage\App\Domain\File\Command\UploadImage\UploadImageInterface;
 use Nonz250\Storage\App\Domain\File\Exceptions\MimeTypeException;
+use Nonz250\Storage\App\Domain\File\Exceptions\UploadFileException;
 use Nonz250\Storage\App\Domain\File\ValueObject\Image;
 use Nonz250\Storage\App\Domain\File\ValueObject\FileName;
 use Nonz250\Storage\App\Foundation\Exceptions\Base64Exception;
@@ -63,11 +64,17 @@ class UploadFileAction
                 $input = new UploadImageInput($clientId, $fileName, $file);
                 $file = $this->uploadImage->process($input);
             } catch (MimeTypeException $e) {
+                $this->logger->error($e);
                 throw new HttpBadRequestException('Invalid mimetype.');
+            } catch (UploadFileException $e) {
+                $this->logger->error($e);
+                throw new HttpInternalErrorException($e->getMessage());
             } catch (Throwable $e) {
+                $this->logger->error($e);
                 throw new HttpInternalErrorException();
             }
         } catch (HttpException $e) {
+            $this->logger->error($e);
             return $e->getApiProblemResponse();
         }
 

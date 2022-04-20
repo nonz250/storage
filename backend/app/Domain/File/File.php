@@ -70,8 +70,11 @@ final class File
         return $this->fileName() . $this->mimeType()->extension();
     }
 
-    public function fullUniqueFileName(): string
+    public function fullUniqueFileName(?MimeType $mimeType = null): string
     {
+        if ($mimeType !== null) {
+            return $this->identifier() . $mimeType->extension();
+        }
         return $this->identifier() . $this->mimeType()->extension();
     }
 }

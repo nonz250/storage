@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace Nonz250\Storage\App\Domain\File\Command\UploadImage;
 
+use Nonz250\Storage\App\Adapter\File\Command\UploadImage\UploadImageOutput;
 use Nonz250\Storage\App\Domain\File\Exceptions\UploadFileException;
-use Nonz250\Storage\App\Domain\File\File;
 use Nonz250\Storage\App\Domain\File\FileFactoryInterface;
 use Nonz250\Storage\App\Domain\File\FileRepositoryInterface;
+use Nonz250\Storage\App\Domain\File\FileService;
 use Nonz250\Storage\App\Domain\File\FileServiceInterface;
 use Nonz250\Storage\App\Domain\File\ValueObject\MimeType;
 use PDOException;
@@ -31,7 +32,7 @@ final class UploadImage implements UploadImageInterface
         $this->fileService = $fileService;
     }
 
-    public function process(UploadImageInputPort $inputPort): File
+    public function process(UploadImageInputPort $inputPort): UploadImageOutputPort
     {
         $file = $this->fileFactory->newImageFile($inputPort->clientId(), $inputPort->fileName(), $inputPort->image());
 
@@ -42,12 +43,21 @@ final class UploadImage implements UploadImageInterface
             throw new UploadFileException('Failed to register database.');
         }
 
+        // Save Webp extension.
+        $file->changeThumbnailMimeType(new MimeType(MimeType::MIME_TYPE_WEBP));
+
         $originFilePath = $this->fileService->uploadOriginImage($file);
         $this->logger->debug($originFilePath);
 
-        $thumbnailFilePath = $this->fileService->uploadThumbnailImage($file, new MimeType(MimeType::MIME_TYPE_WEBP));
+        $thumbnailFilePath = $this->fileService->uploadThumbnailImage($file);
         $this->logger->debug($thumbnailFilePath);
 
-        return $file;
+        return new UploadImageOutput(
+            $file->identifier(),
+            $file->fileNameWithOriginExtension(),
+            $file->uniqueFileNameWithOriginExtension(),
+            FileService::UPLOAD_ORIGIN_DIRECTORY . DIRECTORY_SEPARATOR . $file->uniqueFileNameWithOriginExtension(),
+            FileService::UPLOAD_THUMBNAIL_DIRECTORY . DIRECTORY_SEPARATOR . $file->uniqueFileNameWithThumbnailExtension(),
+        );
     }
 }

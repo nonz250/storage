@@ -18,6 +18,7 @@ final class File
     private ClientId $clientId;
     private FileName $fileName;
     private Image $image;
+    private MimeType $thumbnailMimeType;
 
     public function __construct(FileIdentifier $fileIdentifier, ClientId $clientId, FileName $fileName, Image $image)
     {
@@ -25,6 +26,7 @@ final class File
         $this->clientId = $clientId;
         $this->fileName = $fileName;
         $this->image = $image;
+        $this->thumbnailMimeType = $this->mimeType();
     }
 
     public function identifier(): FileIdentifier
@@ -65,16 +67,28 @@ final class File
         return $mimeType;
     }
 
-    public function fullFileName(): string
+    public function fileNameWithOriginExtension(): string
     {
         return $this->fileName() . $this->mimeType()->extension();
     }
 
-    public function fullUniqueFileName(?MimeType $mimeType = null): string
+    public function uniqueFileNameWithOriginExtension(): string
     {
-        if ($mimeType !== null) {
-            return $this->identifier() . $mimeType->extension();
-        }
         return $this->identifier() . $this->mimeType()->extension();
+    }
+
+    public function uniqueFileNameWithThumbnailExtension(): string
+    {
+        return $this->identifier() . $this->thumbnailMimeType()->extension();
+    }
+
+    public function thumbnailMimeType(): MimeType
+    {
+        return $this->thumbnailMimeType;
+    }
+
+    public function changeThumbnailMimeType(MimeType $mimeType): void
+    {
+        $this->thumbnailMimeType = $mimeType;
     }
 }

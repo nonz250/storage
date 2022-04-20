@@ -27,12 +27,36 @@ class FileTest extends TestCase
         $this->assertSame($fileName, (string)$file->fileName());
         $this->assertSame($image, (string)$file->image());
         $this->assertSame(MimeType::MIME_TYPE_PNG, (string)$file->mimeType());
-        $this->assertSame($fileName . $file->mimeType()->extension(), $file->fullFileName());
-        $this->assertSame($fileIdentifier . $file->mimeType()->extension(), $file->fullUniqueFileName());
-        $mimeType = new MimeType(MimeType::MIME_TYPE_WEBP);
-
-        $this->assertSame($fileIdentifier . $mimeType->extension(), $file->fullUniqueFileName($mimeType));
+        $this->assertSame($fileName . $file->mimeType()->extension(), $file->fileNameWithOriginExtension());
+        $this->assertSame($fileIdentifier . $file->mimeType()->extension(), $file->uniqueFileNameWithOriginExtension());
+        $this->assertSame(MimeType::MIME_TYPE_PNG, (string)$file->thumbnailMimeType());
+        $this->assertSame($fileIdentifier . $file->thumbnailMimeType()->extension(), $file->uniqueFileNameWithThumbnailExtension());
         return $file;
+    }
+
+    /**
+     * @depends test__construct
+     * @param File $file
+     * @return void
+     */
+    public function testChangeThumbnailMimeType(File $file): void
+    {
+        $fileIdentifier = (string)$file->identifier();
+        $fileName = (string)$file->fileName();
+
+        $this->assertSame(MimeType::MIME_TYPE_PNG, (string)$file->mimeType());
+        $this->assertSame($fileName . $file->mimeType()->extension(), $file->fileNameWithOriginExtension());
+        $this->assertSame($fileIdentifier . $file->mimeType()->extension(), $file->uniqueFileNameWithOriginExtension());
+        $this->assertSame(MimeType::MIME_TYPE_PNG, (string)$file->thumbnailMimeType());
+        $this->assertSame($fileIdentifier . $file->thumbnailMimeType()->extension(), $file->uniqueFileNameWithThumbnailExtension());
+
+        $file->changeThumbnailMimeType(new MimeType(MimeType::MIME_TYPE_WEBP));
+
+        $this->assertSame(MimeType::MIME_TYPE_PNG, (string)$file->mimeType());
+        $this->assertSame($fileName . $file->mimeType()->extension(), $file->fileNameWithOriginExtension());
+        $this->assertSame($fileIdentifier . $file->mimeType()->extension(), $file->uniqueFileNameWithOriginExtension());
+        $this->assertSame(MimeType::MIME_TYPE_WEBP, (string)$file->thumbnailMimeType());
+        $this->assertSame($fileIdentifier . $file->thumbnailMimeType()->extension(), $file->uniqueFileNameWithThumbnailExtension());
     }
 
     public function testMimeTypeException(): void

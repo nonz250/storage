@@ -62,7 +62,7 @@ class UploadFileAction
         try {
             try {
                 $input = new UploadImageInput($clientId, $fileName, $file);
-                $file = $this->uploadImage->process($input);
+                $output = $this->uploadImage->process($input);
             } catch (MimeTypeException $e) {
                 $this->logger->error($e);
                 throw new HttpBadRequestException('Invalid mimetype.');
@@ -80,11 +80,11 @@ class UploadFileAction
 
         return new JsonResponse([
             'message' => 'Successfully created file.',
-            'id' => (string)$file->identifier(),
-            'originFileName' => $file->fullFileName(),
-            'originUrl' => sprintf('%s/storage/origin/%s', $_SERVER['HTTP_HOST'], $file->fullUniqueFileName()),
-            'fileName' => $file->fullUniqueFileName(),
-            'thumbnailUrl' => sprintf('%s/storage/thumbnail/%s', $_SERVER['HTTP_HOST'], $file->fullUniqueFileName()),
+            'id' => (string)$output->identifier(),
+            'originFileName' => $output->originFileName(),
+            'fileName' => $output->fileName(),
+            'originUrl' => $_SERVER['HTTP_HOST'] . $output->originUrl(),
+            'thumbnailUrl' => $_SERVER['HTTP_HOST'] . $output->thumbnailUrl(),
         ]);
     }
 }

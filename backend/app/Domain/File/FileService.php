@@ -5,16 +5,16 @@ namespace Nonz250\Storage\App\Domain\File;
 
 use LogicException;
 use Nonz250\Storage\App\Domain\File\Exceptions\UploadFileException;
-use Nonz250\Storage\App\Domain\File\ValueObject\MimeType;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 
 class FileService implements FileServiceInterface
 {
     private const UPLOAD_DIRECTORY = 'storage';
-    private const UPLOAD_ORIGIN_DIRECTORY = 'origin';
-    private const UPLOAD_THUMBNAIL_DIRECTORY = 'thumbnail';
     private const FULL_HD_WIDTH = 1920;
+
+    public const UPLOAD_ORIGIN_DIRECTORY = DIRECTORY_SEPARATOR . self::UPLOAD_DIRECTORY . DIRECTORY_SEPARATOR . 'origin';
+    public const UPLOAD_THUMBNAIL_DIRECTORY = DIRECTORY_SEPARATOR . self::UPLOAD_DIRECTORY . DIRECTORY_SEPARATOR . 'thumbnail';
 
     private LoggerInterface $logger;
 
@@ -25,25 +25,23 @@ class FileService implements FileServiceInterface
 
     public function uploadOriginImage(File $file): string
     {
-        $uploadStorageDirectory = getcwd() . DIRECTORY_SEPARATOR . self::UPLOAD_DIRECTORY . DIRECTORY_SEPARATOR . self::UPLOAD_ORIGIN_DIRECTORY;
+        $uploadStorageDirectory = getcwd() . self::UPLOAD_ORIGIN_DIRECTORY;
         $this->createDir($uploadStorageDirectory);
 
-        $originFilePath = $uploadStorageDirectory . DIRECTORY_SEPARATOR . $file->fullUniqueFileName();
+        $originFilePath = $uploadStorageDirectory . DIRECTORY_SEPARATOR . $file->uniqueFileNameWithOriginExtension();
         $byte = file_put_contents($originFilePath, (string)$file->image());
         if ($byte === false) {
             throw new UploadFileException('Failed to upload file.');
         }
 
-        $this->logger->debug(sprintf('%s is %s bytes.', $file->fullFileName(), $byte));
+        $this->logger->debug(sprintf('%s is %s bytes.', $file->fileNameWithOriginExtension(), $byte));
 
         return $originFilePath;
     }
 
-    public function uploadThumbnailImage(File $file, ?MimeType $mimeType = null, int $resizeWidth = self::FULL_HD_WIDTH / 2): string
+    public function uploadThumbnailImage(File $file, int $resizeWidth = self::FULL_HD_WIDTH / 2): string
     {
-        $mimeType = $mimeType ?? $file->mimeType();
-
-        $uploadThumbnailDirectory = getcwd() . DIRECTORY_SEPARATOR . self::UPLOAD_DIRECTORY . DIRECTORY_SEPARATOR . self::UPLOAD_THUMBNAIL_DIRECTORY;
+        $uploadThumbnailDirectory = getcwd() . self::UPLOAD_THUMBNAIL_DIRECTORY;
         $this->createDir($uploadThumbnailDirectory);
 
         [$originWidth, $originHeight, $type] = getimagesizefromstring((string)$file->image());
@@ -63,7 +61,8 @@ class FileService implements FileServiceInterface
             throw new UploadFileException('Failed to upload file.');
         }
 
-        $thumbnailFilePath = $uploadThumbnailDirectory . DIRECTORY_SEPARATOR . $file->fullUniqueFileName($mimeType);
+        $mimeType = $file->thumbnailMimeType();
+        $thumbnailFilePath = $uploadThumbnailDirectory . DIRECTORY_SEPARATOR . $file->uniqueFileNameWithThumbnailExtension();
         if ($mimeType->isBmp()) {
             $result = imagebmp($thumbnail, $thumbnailFilePath);
         } elseif ($mimeType->isGif()) {
@@ -75,10 +74,8 @@ class FileService implements FileServiceInterface
         } elseif ($mimeType->isWebp()) {
             $result = imagewebp($thumbnail, $thumbnailFilePath);
         } else {
-            // @coverageIgnoreStart
             $this->logger->error(sprintf('Unknown mimetype. [%s]', $mimeType));
             throw new LogicException('Unknown mimetype.');
-            // @coverageIgnoreEnd
         }
 
         if (!$result) {

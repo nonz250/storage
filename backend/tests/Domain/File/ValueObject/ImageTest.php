@@ -4,32 +4,31 @@ declare(strict_types=1);
 namespace Tests\Domain\File\ValueObject;
 
 use InvalidArgumentException;
-use Nonz250\Storage\App\Domain\File\ValueObject\Image;
-use Nonz250\Storage\App\Domain\File\ValueObject\FileName;
+use Nonz250\Storage\App\Domain\File\ValueObject\FileString;
 use PHPUnit\Framework\TestCase;
 use Tests\StringTestHelper;
 
 class ImageTest extends TestCase
 {
-    public function test__construct(): Image
+    public function test__construct(): FileString
     {
-        $expected = StringTestHelper::randomFast(Image::MAX_LENGTH);
-        $image = new Image($expected);
-        $this->assertSame($expected, (string)$image);
-        return $image;
+        $expected = StringTestHelper::randomFast(FileString::MAX_LENGTH);
+        $fileString = new FileString($expected);
+        $this->assertSame($expected, (string)$fileString);
+        return $fileString;
     }
 
     public function testRequiredException(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $expected = '';
-        new Image($expected);
+        new FileString($expected);
     }
 
     public function testMaxLengthException(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $expected = StringTestHelper::randomFast(Image::MAX_LENGTH + 1);
-        new Image($expected);
+        $expected = StringTestHelper::randomFast(FileString::MAX_LENGTH + 1);
+        new FileString($expected);
     }
 }

@@ -10,7 +10,7 @@ use Nonz250\Storage\App\Adapter\File\Command\UploadImage\UploadImageInput;
 use Nonz250\Storage\App\Domain\File\Command\UploadImage\UploadImageInterface;
 use Nonz250\Storage\App\Domain\File\Exceptions\MimeTypeException;
 use Nonz250\Storage\App\Domain\File\Exceptions\UploadFileException;
-use Nonz250\Storage\App\Domain\File\ValueObject\Image;
+use Nonz250\Storage\App\Domain\File\ValueObject\FileString;
 use Nonz250\Storage\App\Domain\File\ValueObject\FileName;
 use Nonz250\Storage\App\Domain\File\ValueObject\MimeType;
 use Nonz250\Storage\App\Foundation\Exceptions\Base64Exception;
@@ -45,7 +45,7 @@ class UploadFileAction
                 if ($fileDecoded === false) {
                     throw new Base64Exception('Failed to base64 decode.');
                 }
-                $file = new Image($fileDecoded);
+                $fileString = new FileString($fileDecoded);
 
                 $fileName = new FileName($requestBody['fileName'] ?? '');
                 $clientId = new ClientId((string)$requestBody['client_id']);
@@ -63,7 +63,7 @@ class UploadFileAction
 
         try {
             try {
-                $input = new UploadImageInput($clientId, $fileName, $file, $mimeType);
+                $input = new UploadImageInput($clientId, $fileName, $fileString, $mimeType);
                 $output = $this->uploadImage->process($input);
             } catch (MimeTypeException $e) {
                 $this->logger->error($e);

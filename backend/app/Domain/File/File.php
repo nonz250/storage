@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use Nonz250\Storage\App\Domain\File\Exceptions\MimeTypeException;
 use Nonz250\Storage\App\Domain\File\ValueObject\FileIdentifier;
 use Nonz250\Storage\App\Domain\File\ValueObject\FileName;
-use Nonz250\Storage\App\Domain\File\ValueObject\Image;
+use Nonz250\Storage\App\Domain\File\ValueObject\FileString;
 use Nonz250\Storage\App\Domain\File\ValueObject\MimeType;
 use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 
@@ -17,15 +17,15 @@ final class File
     private FileIdentifier $fileIdentifier;
     private ClientId $clientId;
     private FileName $fileName;
-    private Image $image;
+    private FileString $fileString;
     private MimeType $thumbnailMimeType;
 
-    public function __construct(FileIdentifier $fileIdentifier, ClientId $clientId, FileName $fileName, Image $image)
+    public function __construct(FileIdentifier $fileIdentifier, ClientId $clientId, FileName $fileName, FileString $fileString)
     {
         $this->fileIdentifier = $fileIdentifier;
         $this->clientId = $clientId;
         $this->fileName = $fileName;
-        $this->image = $image;
+        $this->fileString = $fileString;
         $this->thumbnailMimeType = $this->mimeType();
     }
 
@@ -44,15 +44,15 @@ final class File
         return $this->fileName;
     }
 
-    public function image(): Image
+    public function fileString(): FileString
     {
-        return $this->image;
+        return $this->fileString;
     }
 
     public function mimeType(): MimeType
     {
         $fileInfo = new finfo();
-        $buffer = $fileInfo->buffer((string)$this->image(), FILEINFO_MIME_TYPE);
+        $buffer = $fileInfo->buffer((string)$this->fileString(), FILEINFO_MIME_TYPE);
 
         if ($buffer === false) {
             throw new MimeTypeException('Failed to get mimetype.'); // @codeCoverageIgnore

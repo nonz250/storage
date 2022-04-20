@@ -29,7 +29,7 @@ class FileService implements FileServiceInterface
         $this->createDir($uploadStorageDirectory);
 
         $originFilePath = $uploadStorageDirectory . DIRECTORY_SEPARATOR . $file->uniqueFileNameWithOriginExtension();
-        $byte = file_put_contents($originFilePath, (string)$file->image());
+        $byte = file_put_contents($originFilePath, (string)$file->fileString());
         if ($byte === false) {
             throw new UploadFileException('Failed to upload file.');
         }
@@ -44,10 +44,10 @@ class FileService implements FileServiceInterface
         $uploadThumbnailDirectory = getcwd() . self::UPLOAD_THUMBNAIL_DIRECTORY;
         $this->createDir($uploadThumbnailDirectory);
 
-        [$originWidth, $originHeight, $type] = getimagesizefromstring((string)$file->image());
+        [$originWidth, $originHeight, $type] = getimagesizefromstring((string)$file->fileString());
         $this->logger->debug(sprintf('width: %s, height: %s, type: %s -- %s', $originWidth, $originHeight, $type, $file->identifier()));
 
-        $source = imagecreatefromstring((string)$file->image());
+        $source = imagecreatefromstring((string)$file->fileString());
         if ($source === false) {
             throw new UploadFileException('Failed to upload file.');
         }

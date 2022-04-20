@@ -33,7 +33,7 @@ final class UploadImage implements UploadImageInterface
 
     public function process(UploadImageInputPort $inputPort): UploadImageOutputPort
     {
-        $file = $this->fileFactory->newImageFile($inputPort->clientId(), $inputPort->fileName(), $inputPort->image());
+        $file = $this->fileFactory->newImageFile($inputPort->clientId(), $inputPort->fileName(), $inputPort->fileString());
 
         // Save Webp extension.
         $file->changeThumbnailMimeType($inputPort->mimeType());

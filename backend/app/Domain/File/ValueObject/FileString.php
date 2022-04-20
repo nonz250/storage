@@ -5,7 +5,7 @@ namespace Nonz250\Storage\App\Domain\File\ValueObject;
 
 use InvalidArgumentException;
 
-final class Image
+final class FileString
 {
     public const MAX_LENGTH = 10 * 1000 * 1000; // 10MB
     private const NAME = 'file';

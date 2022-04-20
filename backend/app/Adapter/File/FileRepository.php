@@ -19,12 +19,13 @@ final class FileRepository implements FileRepositoryInterface
 
     public function create(File $file): void
     {
-        $sql = 'INSERT INTO `files` (`id`, `client_id`, `name`, `mimetype`) VALUES (:id, :client_id, :name, :mimetype)';
+        $sql = 'INSERT INTO `files` (`id`, `client_id`, `name`, `origin_mimetype`, `thumbnail_mimetype`) VALUES (:id, :client_id, :name, :origin_mimetype, :thumbnail_mimetype)';
         $bindValues = new BindValues();
         $bindValues->bindValue(':id', (string)$file->identifier());
         $bindValues->bindValue(':client_id', (string)$file->clientId());
         $bindValues->bindValue(':name', (string)$file->fileName());
-        $bindValues->bindValue(':mimetype', (string)$file->mimeType());
+        $bindValues->bindValue(':origin_mimetype', (string)$file->mimeType());
+        $bindValues->bindValue(':thumbnail_mimetype', (string)$file->thumbnailMimeType());
         $this->model->insert($sql, $bindValues);
     }
 }

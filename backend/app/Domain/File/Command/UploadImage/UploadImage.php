@@ -9,7 +9,6 @@ use Nonz250\Storage\App\Domain\File\FileFactoryInterface;
 use Nonz250\Storage\App\Domain\File\FileRepositoryInterface;
 use Nonz250\Storage\App\Domain\File\FileService;
 use Nonz250\Storage\App\Domain\File\FileServiceInterface;
-use Nonz250\Storage\App\Domain\File\ValueObject\MimeType;
 use PDOException;
 use Psr\Log\LoggerInterface;
 
@@ -36,15 +35,15 @@ final class UploadImage implements UploadImageInterface
     {
         $file = $this->fileFactory->newImageFile($inputPort->clientId(), $inputPort->fileName(), $inputPort->image());
 
+        // Save Webp extension.
+        $file->changeThumbnailMimeType($inputPort->mimeType());
+
         try {
             $this->fileRepository->create($file);
         } catch (PDOException $e) {
             $this->logger->error($e);
             throw new UploadFileException('Failed to register database.');
         }
-
-        // Save Webp extension.
-        $file->changeThumbnailMimeType(new MimeType(MimeType::MIME_TYPE_WEBP));
 
         $originFilePath = $this->fileService->uploadOriginImage($file);
         $this->logger->debug($originFilePath);

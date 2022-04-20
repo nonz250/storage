@@ -12,6 +12,7 @@ use Nonz250\Storage\App\Domain\File\Exceptions\MimeTypeException;
 use Nonz250\Storage\App\Domain\File\Exceptions\UploadFileException;
 use Nonz250\Storage\App\Domain\File\ValueObject\Image;
 use Nonz250\Storage\App\Domain\File\ValueObject\FileName;
+use Nonz250\Storage\App\Domain\File\ValueObject\MimeType;
 use Nonz250\Storage\App\Foundation\Exceptions\Base64Exception;
 use Nonz250\Storage\App\Foundation\Exceptions\HttpBadRequestException;
 use Nonz250\Storage\App\Foundation\Exceptions\HttpException;
@@ -48,6 +49,7 @@ class UploadFileAction
 
                 $fileName = new FileName($requestBody['fileName'] ?? '');
                 $clientId = new ClientId((string)$requestBody['client_id']);
+                $mimeType = new MimeType($requestBody['mimetype'] ?? MimeType::MIME_TYPE_WEBP);
             } catch (InvalidArgumentException $e) {
                 $this->logger->error($e);
                 throw new HttpBadRequestException($e->getMessage());
@@ -61,7 +63,7 @@ class UploadFileAction
 
         try {
             try {
-                $input = new UploadImageInput($clientId, $fileName, $file);
+                $input = new UploadImageInput($clientId, $fileName, $file, $mimeType);
                 $output = $this->uploadImage->process($input);
             } catch (MimeTypeException $e) {
                 $this->logger->error($e);

@@ -9,17 +9,20 @@ permissions:
 
 jobs:
   build:
+    runs-on: ubuntu-latest    
 
-    runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: backend
+    
     steps:
     - uses: actions/checkout@v3
 
-    - name: Current directory
+    - name: Current dirctory
       run: ls -al
 
-#     - name: Validate composer.json and composer.lock
-#       run: composer validate --strict
+    - name: Validate composer.json and composer.lock
+      run: composer validate --strict
 
 #     - name: Cache Composer packages
 #       id: composer-cache

@@ -13,7 +13,7 @@ interface UploadImageOutputPort
 
     public function fileName(): string;
 
-    public function originUrl(): string;
+    public function originPath(): string;
 
-    public function thumbnailUrl(): string;
+    public function thumbnailPath(): string;
 }

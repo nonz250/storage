@@ -11,21 +11,21 @@ final class UploadImageOutput implements UploadImageOutputPort
     private FileIdentifier $identifier;
     private string $originFileName;
     private string $fileName;
-    private string $originUrl;
-    private string $thumbnailUrl;
+    private string $originPath;
+    private string $thumbnailPath;
 
     public function __construct(
         FileIdentifier $identifier,
         string $originFileName,
         string $fileName,
-        string $originUrl,
-        string $thumbnailUrl
+        string $originPath,
+        string $thumbnailPath
     ) {
         $this->identifier = $identifier;
         $this->originFileName = $originFileName;
         $this->fileName = $fileName;
-        $this->originUrl = $originUrl;
-        $this->thumbnailUrl = $thumbnailUrl;
+        $this->originPath = $originPath;
+        $this->thumbnailPath = $thumbnailPath;
     }
 
     public function identifier(): FileIdentifier
@@ -43,13 +43,13 @@ final class UploadImageOutput implements UploadImageOutputPort
         return $this->fileName;
     }
 
-    public function originUrl(): string
+    public function originPath(): string
     {
-        return $this->originUrl;
+        return $this->originPath;
     }
 
-    public function thumbnailUrl(): string
+    public function thumbnailPath(): string
     {
-        return $this->thumbnailUrl;
+        return $this->thumbnailPath;
     }
 }

@@ -85,8 +85,8 @@ class UploadFileAction
             'id' => (string)$output->identifier(),
             'originFileName' => $output->originFileName(),
             'fileName' => $output->fileName(),
-            'originUrl' => $_SERVER['HTTP_HOST'] . $output->originUrl(),
-            'thumbnailUrl' => $_SERVER['HTTP_HOST'] . $output->thumbnailUrl(),
+            'originPath' => $output->originPath(),
+            'thumbnailPath' => $output->thumbnailPath(),
         ]);
     }
 }

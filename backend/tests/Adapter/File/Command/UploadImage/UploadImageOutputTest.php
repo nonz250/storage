@@ -18,20 +18,20 @@ class UploadImageOutputTest extends TestCase
         $fileIdentifier = Ulid::generate();
         $originFileName = StringTestHelper::random();
         $fileName = StringTestHelper::random();
-        $originUrl = StringTestHelper::random();
-        $thumbnailUrl = StringTestHelper::random();
+        $originPath = StringTestHelper::random();
+        $thumbnailPath = StringTestHelper::random();
         $output = new UploadImageOutput(
             new FileIdentifier($fileIdentifier),
             $originFileName,
             $fileName,
-            $originUrl,
-            $thumbnailUrl,
+            $originPath,
+            $thumbnailPath,
         );
         $this->assertInstanceOf(UploadImageOutputPort::class, $output);
         $this->assertSame($fileIdentifier, (string)$output->identifier());
         $this->assertSame($originFileName, $output->originFileName());
         $this->assertSame($fileName, $output->fileName());
-        $this->assertSame($originUrl, $output->originUrl());
-        $this->assertSame($thumbnailUrl, $output->thumbnailUrl());
+        $this->assertSame($originPath, $output->originPath());
+        $this->assertSame($thumbnailPath, $output->thumbnailPath());
     }
 }

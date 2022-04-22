@@ -40,7 +40,7 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
 
     - name: Deploy
-      run: rsync -ahvz -e "ssh -i ~/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" ./ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:www/storage --exclude-from="../.github/rsync_exclude.txt"
+      run: rsync -ahvz --delete -e "ssh -i ~/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" ./ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:www/storage --exclude-from="../.github/rsync_exclude.txt"
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md

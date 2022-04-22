@@ -18,23 +18,29 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Current dirctory
-      run: ls -al
-
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
 
-#     - name: Cache Composer packages
-#       id: composer-cache
-#       uses: actions/cache@v3
-#       with:
-#         path: vendor
-#         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-#         restore-keys: |
-#           ${{ runner.os }}-php-
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v3
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
 
-#     - name: Install dependencies
-#       run: composer install --prefer-dist --no-progress
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+      
+    - name: SSH key generate
+      run: |
+        mkdir -p ~/.ssh/
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+
+    - name: Deploy
+      run: rsync -ahvz -e "ssh -i ~/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" ./ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:www/storage
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md

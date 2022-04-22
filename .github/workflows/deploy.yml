@@ -50,6 +50,9 @@ jobs:
         echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
         echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
 
+    - name: Copy .htaccess
+      run: cp ../environment/production/.htaccess public/.htaccess
+
     - name: Deploy
       run: rsync -ahvz --delete -e "ssh -i ~/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" ./ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:www/storage --include-from="../.github/rsync_include.txt" --exclude-from="../.github/rsync_exclude.txt"
 

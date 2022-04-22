@@ -56,4 +56,4 @@ jobs:
     - name: SSH Login
       run: |
         ssh -i ~/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
-        "cd ./www/storage && php -v && php bin/console migrate"
+        "cd ./www/storage && php -v && php bin/console migrate && ln -fs ~/www/shared/storage public/storage"

@@ -31,7 +31,7 @@ jobs:
           ${{ runner.os }}-php-
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
+      run: composer install --no-dev --prefer-dist --no-progress
       
     - name: SSH key generate
       run: |

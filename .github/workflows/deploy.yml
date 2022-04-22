@@ -52,3 +52,8 @@ jobs:
 
     - name: Deploy
       run: rsync -ahvz --delete -e "ssh -i ~/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" ./ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:www/storage --include-from="../.github/rsync_include.txt" --exclude-from="../.github/rsync_exclude.txt"
+
+    - name: SSH Login
+      run: |
+        ssh -i ~/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
+        "cd ./www/storage && php -v && php bin/console migrate"

@@ -5,9 +5,9 @@ namespace Nonz250\Storage\App\Foundation;
 
 use Nonz250\Storage\App\Foundation\Model\Model;
 
-final class Repository implements RepositoryInterface
+abstract class Repository implements RepositoryInterface
 {
-    private Model $model;
+    protected Model $model;
 
     public function __construct(Model $model)
     {

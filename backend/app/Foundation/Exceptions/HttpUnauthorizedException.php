@@ -6,7 +6,7 @@ namespace Nonz250\Storage\App\Foundation\Exceptions;
 use Fig\Http\Message\StatusCodeInterface;
 use Throwable;
 
-class HttpUnauthorizedException extends HttpException
+final class HttpUnauthorizedException extends HttpException
 {
     public function __construct($description = '', $message = 'Unauthorized.', $code = 0, Throwable $previous = null)
     {

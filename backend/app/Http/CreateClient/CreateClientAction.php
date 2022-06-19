@@ -17,9 +17,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-class CreateClientAction
+final class CreateClientAction
 {
     private LoggerInterface $logger;
+
     private CreateClientInterface $createClient;
 
     public function __construct(
@@ -33,6 +34,7 @@ class CreateClientAction
     public function __invoke(ServerRequest $request): ResponseInterface
     {
         $data = $request->getParsedBody();
+
         try {
             try {
                 $appName = new AppName($data['appName'] ?? '');

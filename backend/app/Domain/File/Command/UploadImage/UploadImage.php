@@ -15,8 +15,11 @@ use Throwable;
 final class UploadImage implements UploadImageInterface
 {
     private LoggerInterface $logger;
+
     private FileFactoryInterface $fileFactory;
+
     private FileRepositoryInterface $fileRepository;
+
     private FileServiceInterface $fileService;
 
     public function __construct(
@@ -61,6 +64,7 @@ final class UploadImage implements UploadImageInterface
             $this->logger->debug($thumbnailFilePath);
         } catch (Throwable $e) {
             $this->fileRepository->rollback();
+
             if (!unlink($originFilePath)) {
                 $this->logger->error(sprintf('Failed to delete origin file. -- %s', $originFilePath));
             }

@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
 use Tests\StringTestHelper;
 
-class FileIdentifierTest extends TestCase
+final class FileIdentifierTest extends TestCase
 {
     public function test__construct(): Identifier
     {

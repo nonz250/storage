@@ -8,7 +8,7 @@ use Nonz250\Storage\App\Domain\File\ValueObject\FileString;
 use PHPUnit\Framework\TestCase;
 use Tests\StringTestHelper;
 
-class ImageTest extends TestCase
+final class ImageTest extends TestCase
 {
     public function test__construct(): FileString
     {

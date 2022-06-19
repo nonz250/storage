@@ -10,7 +10,7 @@ use Nonz250\Storage\App\Domain\Client\ValueObject\ClientEmail;
 use PHPUnit\Framework\TestCase;
 use Tests\StringTestHelper;
 
-class CreateClientInputTest extends TestCase
+final class CreateClientInputTest extends TestCase
 {
     public function test__construct(): CreateClientInputPort
     {

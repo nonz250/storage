@@ -6,7 +6,7 @@ namespace Tests\Domain\File\ValueObject;
 use Nonz250\Storage\App\Domain\File\ValueObject\MimeType;
 use PHPUnit\Framework\TestCase;
 
-class MimeTypeTest extends TestCase
+final class MimeTypeTest extends TestCase
 {
     public function testExtension(): void
     {

@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
 use Tests\StringTestHelper;
 
-class FileTest extends TestCase
+final class FileTest extends TestCase
 {
     public function test__construct(): File
     {
@@ -36,7 +36,9 @@ class FileTest extends TestCase
 
     /**
      * @depends test__construct
+     *
      * @param File $file
+     *
      * @return void
      */
     public function testChangeThumbnailMimeType(File $file): void

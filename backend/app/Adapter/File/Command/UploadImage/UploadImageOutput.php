@@ -9,9 +9,13 @@ use Nonz250\Storage\App\Domain\File\ValueObject\FileIdentifier;
 final class UploadImageOutput implements UploadImageOutputPort
 {
     private FileIdentifier $identifier;
+
     private string $originFileName;
+
     private string $fileName;
+
     private string $originPath;
+
     private string $thumbnailPath;
 
     public function __construct(

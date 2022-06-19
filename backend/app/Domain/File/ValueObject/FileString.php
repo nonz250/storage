@@ -8,6 +8,7 @@ use InvalidArgumentException;
 final class FileString
 {
     public const MAX_LENGTH = 10 * 1000 * 1000; // 10MB
+
     private const NAME = 'file';
 
     private string $value;
@@ -28,6 +29,7 @@ final class FileString
         if ($value === '') {
             throw new InvalidArgumentException(sprintf('%s is required.', self::NAME));
         }
+
         if (mb_strlen($value) > self::MAX_LENGTH) {
             throw new InvalidArgumentException(sprintf('%s must be less than %s byte.', self::NAME, self::MAX_LENGTH));
         }

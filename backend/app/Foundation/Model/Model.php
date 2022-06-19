@@ -7,9 +7,9 @@ use PDO;
 use PDOException;
 use PDOStatement;
 
-class Model
+final class Model
 {
-    protected PDO $pdo;
+    private PDO $pdo;
 
     public function __construct(PDO $pdo)
     {
@@ -40,6 +40,7 @@ class Model
     public function execute(string $sql, ?BindValues $bindValues = null): PDOStatement
     {
         $statement = $this->pdo->prepare($sql);
+
         if ($statement === false) {
             throw new PDOException('Failed prepared query.');
         }
@@ -66,6 +67,7 @@ class Model
         }
 
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
         if ($result === false) {
             throw new PDOException('Failed fetch all.');
         }

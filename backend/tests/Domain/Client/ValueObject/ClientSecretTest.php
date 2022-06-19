@@ -8,7 +8,7 @@ use Nonz250\Storage\App\Domain\Client\ValueObject\ClientSecret;
 use PHPUnit\Framework\TestCase;
 use Tests\StringTestHelper;
 
-class ClientSecretTest extends TestCase
+final class ClientSecretTest extends TestCase
 {
     public function test__construct(): ClientSecret
     {

@@ -11,9 +11,10 @@ use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 use Throwable;
 
-class HttpException extends RuntimeException implements HttpExceptionInterface
+final class HttpException extends RuntimeException implements HttpExceptionInterface
 {
     private int $statusCode;
+
     private string $description;
 
     public function __construct(

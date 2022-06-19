@@ -12,7 +12,7 @@ use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 use PHPUnit\Framework\TestCase;
 use Tests\StringTestHelper;
 
-class ClientFactoryTest extends TestCase
+final class ClientFactoryTest extends TestCase
 {
     public function test__construct(): ClientFactoryInterface
     {
@@ -23,7 +23,9 @@ class ClientFactoryTest extends TestCase
 
     /**
      * @depends test__construct
+     *
      * @param ClientFactoryInterface $clientFactory
+     *
      * @return void
      */
     public function testNewClient(ClientFactoryInterface $clientFactory): void

@@ -12,8 +12,11 @@ use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 final class UploadImageInput implements UploadImageInputPort
 {
     private ClientId $clientId;
+
     private FileName $fileName;
+
     private FileString $fileString;
+
     private MimeType $mimeType;
 
     public function __construct(ClientId $clientId, FileName $fileName, FileString $fileString, MimeType $mimeType)

@@ -8,7 +8,7 @@ use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 use PHPUnit\Framework\TestCase;
 use Tests\StringTestHelper;
 
-class ClientIdTest extends TestCase
+final class ClientIdTest extends TestCase
 {
     public function test__construct(): ClientId
     {

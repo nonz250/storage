@@ -9,6 +9,7 @@ use Nonz250\Storage\App\Domain\Client\ValueObject\ClientEmail;
 final class CreateClientInput implements CreateClientInputPort
 {
     private AppName $appName;
+
     private ClientEmail $clientEmail;
 
     public function __construct(AppName $appName, ClientEmail $clientEmail)

@@ -19,9 +19,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-class AuthMiddleware implements MiddlewareInterface
+final class AuthMiddleware implements MiddlewareInterface
 {
     private LoggerInterface $logger;
+
     private DigestAuthInterface $digestAuth;
 
     public function __construct(
@@ -36,6 +37,7 @@ class AuthMiddleware implements MiddlewareInterface
     {
         try {
             $digests = $request->getHeader('Authorization') ?? [];
+
             if (count($digests) === 0) {
                 throw new HttpUnauthorizedException('Please set `Authorization` header.');
             }
@@ -48,7 +50,7 @@ class AuthMiddleware implements MiddlewareInterface
             try {
                 $input = new DigestAuthInput($digests[0], $request->getMethod(), App::env('DIGEST_NONCE'));
                 $this->digestAuth->process($input);
-            } catch (InvalidArgumentException | DataNotFoundException $e) {
+            } catch (InvalidArgumentException|DataNotFoundException $e) {
                 $this->logger->error($e);
                 throw new HttpBadRequestException($e->getMessage());
             } catch (InvalidResponseException $e) {

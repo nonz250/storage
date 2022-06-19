@@ -8,7 +8,7 @@ use Nonz250\Storage\App\Domain\Client\ValueObject\ClientEmail;
 use Nonz250\Storage\App\Domain\Client\ValueObject\ClientSecret;
 use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 
-class ClientFactory implements ClientFactoryInterface
+final class ClientFactory implements ClientFactoryInterface
 {
     public function newClient(AppName $appName, ClientEmail $clientEmail): Client
     {

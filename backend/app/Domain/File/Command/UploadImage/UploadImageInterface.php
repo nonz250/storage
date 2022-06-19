@@ -9,7 +9,9 @@ interface UploadImageInterface
 {
     /**
      * @param UploadImageInputPort $inputPort
+     *
      * @throws UploadFileException
+     *
      * @return UploadImageOutputPort
      */
     public function process(UploadImageInputPort $inputPort): UploadImageOutputPort;

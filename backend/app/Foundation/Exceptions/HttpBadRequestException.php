@@ -6,7 +6,7 @@ namespace Nonz250\Storage\App\Foundation\Exceptions;
 use Fig\Http\Message\StatusCodeInterface;
 use Throwable;
 
-class HttpBadRequestException extends HttpException
+final class HttpBadRequestException extends HttpException
 {
     public function __construct($description = '', $message = 'BadRequest.', $code = 0, Throwable $previous = null)
     {

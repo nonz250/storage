@@ -11,7 +11,7 @@ use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 use PHPUnit\Framework\TestCase;
 use Tests\StringTestHelper;
 
-class FileFactoryTest extends TestCase
+final class FileFactoryTest extends TestCase
 {
     public function test__construct(): FileFactoryInterface
     {
@@ -22,7 +22,9 @@ class FileFactoryTest extends TestCase
 
     /**
      * @depends test__construct
+     *
      * @param FileFactoryInterface $fileFactory
+     *
      * @return void
      */
     public function testNewImageFile(FileFactoryInterface $fileFactory): void

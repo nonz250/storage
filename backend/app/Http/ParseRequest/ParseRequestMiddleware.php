@@ -11,7 +11,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 
-class ParseRequestMiddleware implements MiddlewareInterface
+final class ParseRequestMiddleware implements MiddlewareInterface
 {
     private LoggerInterface $logger;
 
@@ -25,11 +25,13 @@ class ParseRequestMiddleware implements MiddlewareInterface
         try {
             try {
                 $contentTypes = $request->getHeader('Content-Type');
+
                 if (count($contentTypes) === 0) {
                     throw new EmptyContentTypeException();
                 }
 
                 $contentType = $contentTypes[0];
+
                 if ($contentType !== 'application/json') {
                     throw new InvalidContentTypeException();
                 }

@@ -11,8 +11,11 @@ use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 final class Client
 {
     private ClientId $clientId;
+
     private ClientSecret $clientSecret;
+
     private AppName $appName;
+
     private ClientEmail $clientEmail;
 
     public function __construct(

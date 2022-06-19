@@ -7,7 +7,7 @@ use Nonz250\Storage\App\Foundation\App;
 use Nonz250\Storage\App\Shared\ValueObject\Environment;
 use PHPUnit\Framework\TestCase;
 
-class AppTest extends TestCase
+final class AppTest extends TestCase
 {
     public function testEnvironment(): void
     {

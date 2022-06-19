@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
 use Tests\StringTestHelper;
 
-class StringIdentifierTest extends TestCase
+final class StringIdentifierTest extends TestCase
 {
     public function test__construct(): void
     {

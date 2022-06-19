@@ -7,6 +7,7 @@ final class App
 {
     /**
      * @param string $environment
+     *
      * @return bool
      */
     public static function environment(string $environment): bool

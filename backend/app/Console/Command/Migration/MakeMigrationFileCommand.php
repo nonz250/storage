@@ -12,11 +12,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class MakeMigrationFileCommand extends Command
 {
     private const FILE_NAME_ARGUMENT = 'file_name';
+
     private const FILE_DATE_FORMAT = 'YmdHisv';
+
     private const FILE_EXTENSION = 'sql';
+
     private const MIGRATION_DIRECTORY = 'database/migrations/';
 
     protected static $defaultName = 'make:migration';
+
     protected static $defaultDescription = 'Make migration file.';
 
     protected function configure(): void

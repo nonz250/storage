@@ -11,7 +11,16 @@ trait StringIdentifier
     private string $identifier;
 
     /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->identifier;
+    }
+
+    /**
      * @param mixed $object
+     *
      * @return bool
      */
     public function equals($object): bool
@@ -23,17 +32,11 @@ trait StringIdentifier
     }
 
     /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->identifier;
-    }
-
-    /**
      * @see https://github.com/ulid/spec
      * @see https://github.com/symfony/uid/blob/5.3/Ulid.php#L49
+     *
      * @param string $value
+     *
      * @return bool
      */
     public function isValidForUlid(string $value): bool

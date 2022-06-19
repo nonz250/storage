@@ -8,13 +8,15 @@ use Nonz250\Storage\App\Domain\File\Exceptions\UploadFileException;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 
-class FileService implements FileServiceInterface
+final class FileService implements FileServiceInterface
 {
-    private const UPLOAD_DIRECTORY = 'storage';
-    private const FULL_HD_WIDTH = 1920;
-
     public const UPLOAD_ORIGIN_DIRECTORY = DIRECTORY_SEPARATOR . self::UPLOAD_DIRECTORY . DIRECTORY_SEPARATOR . 'origin';
+
     public const UPLOAD_THUMBNAIL_DIRECTORY = DIRECTORY_SEPARATOR . self::UPLOAD_DIRECTORY . DIRECTORY_SEPARATOR . 'thumbnail';
+
+    private const UPLOAD_DIRECTORY = 'storage';
+
+    private const FULL_HD_WIDTH = 1920;
 
     private LoggerInterface $logger;
 
@@ -30,6 +32,7 @@ class FileService implements FileServiceInterface
 
         $originFilePath = $uploadStorageDirectory . DIRECTORY_SEPARATOR . $file->uniqueFileNameWithOriginExtension();
         $byte = file_put_contents($originFilePath, (string)$file->fileString());
+
         if ($byte === false) {
             throw new UploadFileException('Failed to upload file.');
         }
@@ -48,6 +51,7 @@ class FileService implements FileServiceInterface
         $this->logger->debug(sprintf('width: %s, height: %s, type: %s -- %s', $originWidth, $originHeight, $type, $file->identifier()));
 
         $source = imagecreatefromstring((string)$file->fileString());
+
         if ($source === false) {
             throw new UploadFileException('Failed to upload file.');
         }
@@ -57,12 +61,14 @@ class FileService implements FileServiceInterface
         $newHeight = (int)($originHeight * $ratio);
 
         $thumbnail = imagecreatetruecolor($newWidth, $newHeight);
+
         if (!imagecopyresampled($thumbnail, $source, 0, 0, 0, 0, $newWidth, $newHeight, $originWidth, $originHeight)) {
             throw new UploadFileException('Failed to upload file.');
         }
 
         $mimeType = $file->thumbnailMimeType();
         $thumbnailFilePath = $uploadThumbnailDirectory . DIRECTORY_SEPARATOR . $file->uniqueFileNameWithThumbnailExtension();
+
         if ($mimeType->isBmp()) {
             $result = imagebmp($thumbnail, $thumbnailFilePath);
         } elseif ($mimeType->isGif()) {

@@ -30,6 +30,7 @@ final class JsonStrategy extends \League\Route\Strategy\JsonStrategy
                 RequestHandlerInterface $handler
             ): ResponseInterface {
                 $detail = '';
+
                 if ($this->exception instanceof NotFoundException) {
                     $detail = 'Nothing route.';
                 }
@@ -39,6 +40,7 @@ final class JsonStrategy extends \League\Route\Strategy\JsonStrategy
                 $problem
                     ->setTitle($this->exception->getMessage())
                     ->setStatus($this->exception->getStatusCode());
+
                 if ($detail) {
                     $problem->setDetail($detail);
                 }

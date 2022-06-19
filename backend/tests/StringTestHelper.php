@@ -5,7 +5,7 @@ namespace Tests;
 
 use Exception;
 
-class StringTestHelper
+final class StringTestHelper
 {
     private const DEFAULT_LENGTH = 30;
 
@@ -18,11 +18,12 @@ class StringTestHelper
         try {
             $result = '';
             $baseChars = count($chars) ? $chars : self::ALPHA_NUM_CHARS;
+
             for ($i = 0; $i < $length; $i++) {
                 $result .= $baseChars[random_int(0, count($baseChars) - 1)];
             }
         } catch (Exception $e) {
-            die($e->getMessage());
+            exit($e->getMessage());
         }
         return $result;
     }
@@ -37,7 +38,7 @@ class StringTestHelper
         try {
             return bin2hex(random_bytes((int)($length / 2)));
         } catch (Exception $e) {
-            die($e->getMessage());
+            exit($e->getMessage());
         }
     }
 

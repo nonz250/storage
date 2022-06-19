@@ -11,6 +11,7 @@ use Throwable;
 final class CreateClient implements CreateClientInterface
 {
     private ClientFactoryInterface $clientFactory;
+
     private ClientRepositoryInterface $clientRepository;
 
     public function __construct(

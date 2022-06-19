@@ -11,6 +11,7 @@ use RuntimeException;
 final class ClientId extends StringValue
 {
     public const LENGTH = 32;
+
     public const NAME = 'Username';
 
     public function __construct(string $value)
@@ -36,9 +37,11 @@ final class ClientId extends StringValue
         if ($value === '') {
             throw new InvalidArgumentException(sprintf('%s is required.', self::NAME));
         }
+
         if (!ctype_xdigit($value)) {
             throw new InvalidArgumentException(sprintf('%s must be hex character only.', self::NAME));
         }
+
         if (mb_strlen($value) !== self::LENGTH) {
             throw new InvalidArgumentException(
                 sprintf('%s must be %s chars.', __CLASS__, self::LENGTH)

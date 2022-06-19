@@ -14,6 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class MigrationFreshCommand extends Command
 {
     protected static $defaultName = 'migrate:fresh';
+
     protected static $defaultDescription = 'DB migration fresh for MySQL.';
 
     protected function execute(InputInterface $input, OutputInterface $output): int

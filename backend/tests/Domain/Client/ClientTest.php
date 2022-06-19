@@ -11,7 +11,7 @@ use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 use PHPUnit\Framework\TestCase;
 use Tests\StringTestHelper;
 
-class ClientTest extends TestCase
+final class ClientTest extends TestCase
 {
     public function test__construct(): Client
     {

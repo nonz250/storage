@@ -16,6 +16,7 @@ final class MigrationCommand extends Command
     private const MIGRATION_DIRECTORY = 'database/migrations/';
 
     protected static $defaultName = 'migrate';
+
     protected static $defaultDescription = 'DB migration for MySQL.';
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -41,9 +42,11 @@ final class MigrationCommand extends Command
 
             // 対象のファイルを全て取得
             $files = glob(self::MIGRATION_DIRECTORY . '*.sql');
+
             foreach ($files as $file) {
                 $fileName = basename($file);
                 $migration = $migrationRepository->findByFileName($fileName);
+
                 if ($migration) {
                     continue;
                 }

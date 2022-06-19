@@ -7,7 +7,7 @@ use InvalidArgumentException;
 use Nonz250\Storage\App\Foundation\ValueObject\Enum;
 use PHPUnit\Framework\TestCase;
 
-class EnumTest extends TestCase
+final class EnumTest extends TestCase
 {
     public function test__construct(): void
     {

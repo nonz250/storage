@@ -12,7 +12,7 @@ use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 use PHPUnit\Framework\TestCase;
 use Tests\StringTestHelper;
 
-class UploadImageInputTest extends TestCase
+final class UploadImageInputTest extends TestCase
 {
     public function test__construct()
     {

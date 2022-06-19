@@ -19,9 +19,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class CreateClientCommand extends Command
 {
     private const APP_NAME_ARGUMENT = 'app_name';
+
     private const EMAIL_ARGUMENT = 'email';
 
     protected static $defaultName = 'make:client';
+
     protected static $defaultDescription = 'Make client.';
 
     protected function configure(): void

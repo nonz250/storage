@@ -9,7 +9,7 @@ use Nonz250\Storage\App\Foundation\ValueObject\StringValue;
 use PHPUnit\Framework\TestCase;
 use Tests\StringTestHelper;
 
-class AppNameTest extends TestCase
+final class AppNameTest extends TestCase
 {
     public function test__construct(): AppName
     {

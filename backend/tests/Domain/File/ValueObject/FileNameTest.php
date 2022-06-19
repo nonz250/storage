@@ -8,7 +8,7 @@ use Nonz250\Storage\App\Domain\File\ValueObject\FileName;
 use PHPUnit\Framework\TestCase;
 use Tests\StringTestHelper;
 
-class FileNameTest extends TestCase
+final class FileNameTest extends TestCase
 {
     public function test__construct(): FileName
     {

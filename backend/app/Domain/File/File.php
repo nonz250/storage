@@ -15,9 +15,13 @@ use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 final class File
 {
     private FileIdentifier $fileIdentifier;
+
     private ClientId $clientId;
+
     private FileName $fileName;
+
     private FileString $fileString;
+
     private MimeType $thumbnailMimeType;
 
     public function __construct(FileIdentifier $fileIdentifier, ClientId $clientId, FileName $fileName, FileString $fileString)

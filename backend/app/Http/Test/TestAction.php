@@ -6,7 +6,7 @@ namespace Nonz250\Storage\App\Http\Test;
 use Laminas\Diactoros\Response;
 use Psr\Http\Message\ResponseInterface;
 
-class TestAction
+final class TestAction
 {
     /**
      * @return ResponseInterface

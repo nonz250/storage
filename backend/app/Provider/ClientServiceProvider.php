@@ -17,7 +17,7 @@ use Nonz250\Storage\App\Http\Auth\AuthMiddleware;
 use Nonz250\Storage\App\Http\CreateClient\CreateClientAction;
 use Psr\Log\LoggerInterface;
 
-class ClientServiceProvider extends AbstractServiceProvider
+final class ClientServiceProvider extends AbstractServiceProvider
 {
     public function provides(string $id): bool
     {

@@ -16,7 +16,7 @@ use Nonz250\Storage\App\Foundation\Model\Model;
 use Nonz250\Storage\App\Http\UploadFile\UploadFileAction;
 use Psr\Log\LoggerInterface;
 
-class FileServiceProvider extends AbstractServiceProvider
+final class FileServiceProvider extends AbstractServiceProvider
 {
     public function provides(string $id): bool
     {

@@ -8,7 +8,7 @@ use Nonz250\Storage\App\Foundation\ValueObject\EmailValue;
 use PHPUnit\Framework\TestCase;
 use Tests\StringTestHelper;
 
-class EmailValueTest extends TestCase
+final class EmailValueTest extends TestCase
 {
     public function test__construct(): void
     {

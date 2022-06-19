@@ -18,16 +18,6 @@ final class BindValues implements IteratorAggregate
         return $this;
     }
 
-    private function validate(string $key): void
-    {
-        if ($key === '') {
-            throw new InvalidArgumentException('Key is required.');
-        }
-        if (array_key_exists($key, $this->values)) {
-            throw new InvalidArgumentException('Key already exists.');
-        }
-    }
-
     public function isEmpty(): bool
     {
         return count($this->values) === 0;
@@ -41,5 +31,16 @@ final class BindValues implements IteratorAggregate
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->values);
+    }
+
+    private function validate(string $key): void
+    {
+        if ($key === '') {
+            throw new InvalidArgumentException('Key is required.');
+        }
+
+        if (array_key_exists($key, $this->values)) {
+            throw new InvalidArgumentException('Key already exists.');
+        }
     }
 }

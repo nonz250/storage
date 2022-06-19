@@ -21,6 +21,7 @@ final class ClientEmail extends EmailValue
         if ($value === '') {
             throw new InvalidArgumentException(sprintf('%s is required.', self::NAME));
         }
+
         try {
             parent::validate($value);
         } catch (InvalidArgumentException $e) {

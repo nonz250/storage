@@ -8,7 +8,7 @@ use Nonz250\Storage\App\Foundation\Model\BindValues;
 use PHPUnit\Framework\TestCase;
 use Tests\StringTestHelper;
 
-class BindValuesTest extends TestCase
+final class BindValuesTest extends TestCase
 {
     public function test__construct(): BindValues
     {
@@ -67,7 +67,9 @@ class BindValuesTest extends TestCase
 
     /**
      * @depends test__construct
+     *
      * @param BindValues $bindValues
+     *
      * @return void
      */
     public function testIterator(BindValues $bindValues): void

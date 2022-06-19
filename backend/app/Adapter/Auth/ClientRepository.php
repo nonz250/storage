@@ -21,6 +21,7 @@ final class ClientRepository extends Repository implements ClientRepositoryInter
         $bindValues = new BindValues();
         $bindValues->bindValue(':client_id', (string)$clientId);
         $clients = $this->model->select($sql, $bindValues);
+
         if (count($clients) === 0) {
             throw new DataNotFoundException(sprintf('%s is not found.', ClientId::NAME));
         }

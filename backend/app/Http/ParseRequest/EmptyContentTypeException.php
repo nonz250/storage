@@ -6,7 +6,7 @@ namespace Nonz250\Storage\App\Http\ParseRequest;
 use RuntimeException;
 use Throwable;
 
-class EmptyContentTypeException extends RuntimeException
+final class EmptyContentTypeException extends RuntimeException
 {
     public function __construct($message = 'Content-Type is empty.', $code = 0, Throwable $previous = null)
     {

@@ -9,7 +9,9 @@ interface FileServiceInterface
 {
     /**
      * @param File $file
+     *
      * @throws UploadFileException
+     *
      * @return string
      */
     public function uploadOriginImage(File $file): string;
@@ -17,7 +19,9 @@ interface FileServiceInterface
     /**
      * @param File $file
      * @param int $resizeWidth
+     *
      * @throws UploadFileException
+     *
      * @return string
      */
     public function uploadThumbnailImage(File $file, int $resizeWidth): string;

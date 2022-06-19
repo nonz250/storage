@@ -10,8 +10,8 @@ use Nonz250\Storage\App\Adapter\File\Command\UploadImage\UploadImageInput;
 use Nonz250\Storage\App\Domain\File\Command\UploadImage\UploadImageInterface;
 use Nonz250\Storage\App\Domain\File\Exceptions\MimeTypeException;
 use Nonz250\Storage\App\Domain\File\Exceptions\UploadFileException;
-use Nonz250\Storage\App\Domain\File\ValueObject\FileString;
 use Nonz250\Storage\App\Domain\File\ValueObject\FileName;
+use Nonz250\Storage\App\Domain\File\ValueObject\FileString;
 use Nonz250\Storage\App\Domain\File\ValueObject\MimeType;
 use Nonz250\Storage\App\Foundation\Exceptions\Base64Exception;
 use Nonz250\Storage\App\Foundation\Exceptions\HttpBadRequestException;
@@ -22,9 +22,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-class UploadFileAction
+final class UploadFileAction
 {
     private LoggerInterface $logger;
+
     private UploadImageInterface $uploadImage;
 
     public function __construct(
@@ -38,10 +39,12 @@ class UploadFileAction
     public function __invoke(ServerRequest $request): ResponseInterface
     {
         $requestBody = $request->getParsedBody();
+
         try {
             try {
                 $fileEncoded = $requestBody['file'] ?? '';
                 $fileDecoded = base64_decode($fileEncoded, true);
+
                 if ($fileDecoded === false) {
                     throw new Base64Exception('Failed to base64 decode.');
                 }

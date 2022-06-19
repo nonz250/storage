@@ -6,7 +6,7 @@ namespace Tests\Foundation\ValueObject;
 use Nonz250\Storage\App\Foundation\ValueObject\StringValue;
 use PHPUnit\Framework\TestCase;
 
-class StringValueTest extends TestCase
+final class StringValueTest extends TestCase
 {
     public function test__construct(): void
     {
@@ -16,6 +16,7 @@ class StringValueTest extends TestCase
             {
                 $this->value = $value;
             }
+
             protected function validate(string $value): void
             {
             }

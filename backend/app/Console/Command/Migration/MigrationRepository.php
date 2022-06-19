@@ -7,7 +7,7 @@ use Nonz250\Storage\App\Foundation\App;
 use Nonz250\Storage\App\Foundation\Model\BindValues;
 use Nonz250\Storage\App\Foundation\Model\Model;
 
-class MigrationRepository implements MigrationRepositoryInterface
+final class MigrationRepository implements MigrationRepositoryInterface
 {
     private Model $model;
 
@@ -32,6 +32,7 @@ class MigrationRepository implements MigrationRepositoryInterface
     {
         $sql = sprintf('SELECT * FROM %s ORDER BY step DESC LIMIT 1', App::migrationTable());
         $migrations = $this->model->select($sql);
+
         if ($migrations) {
             return $migrations[0];
         }
@@ -44,6 +45,7 @@ class MigrationRepository implements MigrationRepositoryInterface
         $bindValues = new BindValues();
         $bindValues->bindValue(':file_name', $fileName);
         $migrations = $this->model->select($sql, $bindValues);
+
         if ($migrations) {
             return $migrations[0];
         }
@@ -66,6 +68,7 @@ class MigrationRepository implements MigrationRepositoryInterface
         $bindValues->bindValue(':table', $databaseName);
         $schemas = $this->model->select($sql, $bindValues);
         $this->setForeignKeyChecks(false);
+
         foreach ($schemas as $schema) {
             $sql = "DROP TABLE IF EXISTS {$schema['TABLE_NAME']}";
             $this->model->execute($sql);

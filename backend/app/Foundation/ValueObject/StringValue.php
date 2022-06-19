@@ -12,6 +12,11 @@ abstract class StringValue implements Countable
 
     abstract public function __construct(string $value);
 
+    public function __toString(): string
+    {
+        return $this->value;
+    }
+
     public function count(): int
     {
         return mb_strlen($this->value);
@@ -22,13 +27,9 @@ abstract class StringValue implements Countable
         return $this->count() === 0;
     }
 
-    public function __toString(): string
-    {
-        return $this->value;
-    }
-
     /**
      * @param string $value
+     *
      * @throws InvalidArgumentException
      */
     abstract protected function validate(string $value): void;

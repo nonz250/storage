@@ -94,6 +94,7 @@ $router
     ->group('/', static function (League\Route\RouteGroup $router) {
         $router->post('/clients', Nonz250\Storage\App\Http\CreateClient\CreateClientAction::class);
         $router->post('/files', Nonz250\Storage\App\Http\UploadFile\UploadFileAction::class);
+        $router->delete('/files', Nonz250\Storage\App\Http\DeleteFileByClient\DeleteFileByClientAction::class);
     })
     ->middleware($container->get(Nonz250\Storage\App\Http\Auth\AuthMiddleware::class))
     ->setStrategy($strategy);

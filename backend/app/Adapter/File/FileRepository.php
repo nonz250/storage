@@ -7,6 +7,7 @@ use Nonz250\Storage\App\Domain\File\File;
 use Nonz250\Storage\App\Domain\File\FileRepositoryInterface;
 use Nonz250\Storage\App\Foundation\Model\BindValues;
 use Nonz250\Storage\App\Foundation\Repository;
+use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 
 final class FileRepository extends Repository implements FileRepositoryInterface
 {
@@ -20,5 +21,13 @@ final class FileRepository extends Repository implements FileRepositoryInterface
         $bindValues->bindValue(':origin_mimetype', (string)$file->mimeType());
         $bindValues->bindValue(':thumbnail_mimetype', (string)$file->thumbnailMimeType());
         $this->model->insert($sql, $bindValues);
+    }
+
+    public function deleteByClientId(ClientId $clientId): void
+    {
+        $sql = 'DELETE FROM `files` WHERE `files`.`client_id` = :client_id';
+        $bindValues = new BindValues();
+        $bindValues->bindValue(':client_id', (string)$clientId);
+        $this->model->delete($sql, $bindValues);
     }
 }

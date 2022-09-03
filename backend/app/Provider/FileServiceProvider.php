@@ -5,6 +5,8 @@ namespace Nonz250\Storage\App\Provider;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Nonz250\Storage\App\Adapter\File\FileRepository;
+use Nonz250\Storage\App\Domain\File\Command\DeleteImageByClient\DeleteImageByClient;
+use Nonz250\Storage\App\Domain\File\Command\DeleteImageByClient\DeleteImageByClientInterface;
 use Nonz250\Storage\App\Domain\File\Command\UploadImage\UploadImage;
 use Nonz250\Storage\App\Domain\File\Command\UploadImage\UploadImageInterface;
 use Nonz250\Storage\App\Domain\File\FileFactory;
@@ -13,6 +15,7 @@ use Nonz250\Storage\App\Domain\File\FileRepositoryInterface;
 use Nonz250\Storage\App\Domain\File\FileService;
 use Nonz250\Storage\App\Domain\File\FileServiceInterface;
 use Nonz250\Storage\App\Foundation\Model\Model;
+use Nonz250\Storage\App\Http\DeleteFileByClient\DeleteFileByClientAction;
 use Nonz250\Storage\App\Http\UploadFile\UploadFileAction;
 use Psr\Log\LoggerInterface;
 
@@ -22,6 +25,7 @@ final class FileServiceProvider extends AbstractServiceProvider
     {
         $services = [
             UploadFileAction::class,
+            DeleteFileByClientAction::class,
         ];
         return in_array($id, $services, true);
     }
@@ -40,17 +44,33 @@ final class FileServiceProvider extends AbstractServiceProvider
             ]);
 
         $this->getContainer()
+            ->add(DeleteFileByClientAction::class)
+            ->addArguments([
+                LoggerInterface::class,
+                DeleteImageByClientInterface::class,
+            ]);
+
+        $this->getContainer()
             ->add(FileFactoryInterface::class, FileFactory::class);
 
         $this->getContainer()
             ->add(FileServiceInterface::class, FileService::class)
-            ->addArgument(LoggerInterface::class);
+            ->addArgument(LoggerInterface::class)
+            ->addArgument(Model::class);
 
         $this->getContainer()
             ->add(UploadImageInterface::class, UploadImage::class)
             ->addArguments([
                 LoggerInterface::class,
                 FileFactoryInterface::class,
+                FileRepositoryInterface::class,
+                FileServiceInterface::class,
+            ]);
+
+        $this->getContainer()
+            ->add(DeleteImageByClientInterface::class, DeleteImageByClient::class)
+            ->addArguments([
+                LoggerInterface::class,
                 FileRepositoryInterface::class,
                 FileServiceInterface::class,
             ]);

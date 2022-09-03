@@ -39,10 +39,12 @@
             <!-- TODO: Domain testing -->
             <file>app/Domain/Client/Command/CreateClient/CreateClient.php</file>
             <file>app/Domain/File/Command/UploadImage/UploadImage.php</file>
+            <file>app/Domain/File/Command/DeleteImageByClient/DeleteImageByClient.php</file>
             <file>app/Domain/File/FileService.php</file>
             <!-- TODO: Action testing -->
             <file>app/Http/CreateClient/CreateClientAction.php</file>
             <file>app/Http/UploadFile/UploadFileAction.php</file>
+            <file>app/Http/DeleteFileByClient/DeleteFileByClientAction.php</file>
             <!-- Unnecessary testing -->
             <directory suffix=".php">app/Provider</directory>
             <directory suffix=".php">app/Http/Auth</directory>

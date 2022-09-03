@@ -83,4 +83,13 @@ final class Model
             throw new PDOException('Failed execute select.');
         }
     }
+
+    public function delete(string $sql, BindValues $bindValues): void
+    {
+        try {
+            $this->execute($sql, $bindValues);
+        } catch (PDOException $e) {
+            throw new PDOException('Failed execute delete.');
+        }
+    }
 }

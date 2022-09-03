@@ -1,9 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace Nonz250\Storage\App\Adapter\File\Command\DeleteImageByClient;
+namespace Nonz250\Storage\App\Domain\File\Command\DeleteImageByClient;
 
-use Nonz250\Storage\App\Domain\File\Command\DeleteImageByClient\DeleteImageByClientInputPort;
 use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 
 final class DeleteImageByClientInput implements DeleteImageByClientInputPort

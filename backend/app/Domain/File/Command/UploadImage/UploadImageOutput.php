@@ -1,9 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace Nonz250\Storage\App\Adapter\File\Command\UploadImage;
+namespace Nonz250\Storage\App\Domain\File\Command\UploadImage;
 
-use Nonz250\Storage\App\Domain\File\Command\UploadImage\UploadImageOutputPort;
 use Nonz250\Storage\App\Domain\File\ValueObject\FileIdentifier;
 
 final class UploadImageOutput implements UploadImageOutputPort

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\Adapter\File\Command\UploadImage;
+namespace Tests\Domain\File\Command\UploadImage;
 
-use Nonz250\Storage\App\Adapter\File\Command\UploadImage\UploadImageOutput;
+use Nonz250\Storage\App\Domain\File\Command\UploadImage\UploadImageOutput;
 use Nonz250\Storage\App\Domain\File\Command\UploadImage\UploadImageOutputPort;
 use Nonz250\Storage\App\Domain\File\ValueObject\FileIdentifier;
 use PHPUnit\Framework\TestCase;

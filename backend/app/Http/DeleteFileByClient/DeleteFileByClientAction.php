@@ -7,7 +7,7 @@ use Fig\Http\Message\StatusCodeInterface;
 use InvalidArgumentException;
 use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Diactoros\ServerRequest;
-use Nonz250\Storage\App\Adapter\File\Command\DeleteImageByClient\DeleteImageByClientInput;
+use Nonz250\Storage\App\Domain\File\Command\DeleteImageByClient\DeleteImageByClientInput;
 use Nonz250\Storage\App\Domain\File\Command\DeleteImageByClient\DeleteImageByClientInterface;
 use Nonz250\Storage\App\Domain\File\Command\DeleteImageByClient\DeleteImageException;
 use Nonz250\Storage\App\Foundation\Exceptions\HttpBadRequestException;

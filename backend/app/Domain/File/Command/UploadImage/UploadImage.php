@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Nonz250\Storage\App\Domain\File\Command\UploadImage;
 
-use Nonz250\Storage\App\Adapter\File\Command\UploadImage\UploadImageOutput;
 use Nonz250\Storage\App\Domain\File\Exceptions\UploadFileException;
 use Nonz250\Storage\App\Domain\File\FileFactoryInterface;
 use Nonz250\Storage\App\Domain\File\FileRepositoryInterface;

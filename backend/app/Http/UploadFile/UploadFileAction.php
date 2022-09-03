@@ -6,7 +6,7 @@ namespace Nonz250\Storage\App\Http\UploadFile;
 use InvalidArgumentException;
 use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Diactoros\ServerRequest;
-use Nonz250\Storage\App\Adapter\File\Command\UploadImage\UploadImageInput;
+use Nonz250\Storage\App\Domain\File\Command\UploadImage\UploadImageInput;
 use Nonz250\Storage\App\Domain\File\Command\UploadImage\UploadImageInterface;
 use Nonz250\Storage\App\Domain\File\Exceptions\MimeTypeException;
 use Nonz250\Storage\App\Domain\File\Exceptions\UploadFileException;

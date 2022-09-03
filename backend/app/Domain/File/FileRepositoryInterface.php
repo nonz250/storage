@@ -10,5 +10,7 @@ interface FileRepositoryInterface extends RepositoryInterface
 {
     public function create(File $file): void;
 
+    public function delete(File $file): void;
+
     public function deleteByClientId(ClientId $clientId): void;
 }

@@ -75,6 +75,23 @@ final class Model
         return $result;
     }
 
+    public function first(string $sql, ?BindValues $bindValues = null): array
+    {
+        try {
+            $statement = $this->execute($sql, $bindValues);
+        } catch (PDOException $e) {
+            throw new PDOException('Failed execute select.');
+        }
+
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if ($result === false) {
+            throw new PDOException('Failed fetch all.');
+        }
+
+        return $result;
+    }
+
     public function insert(string $sql, BindValues $bindValues): void
     {
         try {

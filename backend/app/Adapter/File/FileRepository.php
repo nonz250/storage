@@ -23,6 +23,14 @@ final class FileRepository extends Repository implements FileRepositoryInterface
         $this->model->insert($sql, $bindValues);
     }
 
+    public function delete(File $file): void
+    {
+        $sql = 'DELETE FROM `files` WHERE `files`.`id` = :file_id';
+        $bindValues = new BindValues();
+        $bindValues->bindValue(':file_id', (string)$file->identifier());
+        $this->model->delete($sql, $bindValues);
+    }
+
     public function deleteByClientId(ClientId $clientId): void
     {
         $sql = 'DELETE FROM `files` WHERE `files`.`client_id` = :client_id';

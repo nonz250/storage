@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Nonz250\Storage\App\Domain\File\Command\DeleteImageByClient;
+namespace Nonz250\Storage\App\Domain\File\Command\DeleteImageById;
 
 use Nonz250\Storage\App\Domain\File\Exceptions\ImageNotExistsException;
 use Nonz250\Storage\App\Domain\File\Exceptions\RemoveFileException;
@@ -10,7 +10,7 @@ use Nonz250\Storage\App\Domain\File\FileServiceInterface;
 use PDOException;
 use Psr\Log\LoggerInterface;
 
-final class DeleteImageByClient implements DeleteImageByClientInterface
+final class DeleteImageById implements DeleteImageByIdInterface
 {
     private LoggerInterface $logger;
 
@@ -28,32 +28,29 @@ final class DeleteImageByClient implements DeleteImageByClientInterface
         $this->fileService = $fileService;
     }
 
-    public function process(DeleteImageByClientInputPort $inputPort): void
+    public function process(DeleteImageByIdInputPort $inputPort): void
     {
         try {
             // 削除する画像データを取得
-            $images = $this->fileService->getImagesByClientId($inputPort->clientId());
+            $image = $this->fileService->getImageById($inputPort->fileIdentifier());
         } catch (ImageNotExistsException $e) {
             $this->logger->error($e);
-            throw new DeleteImageException('Failed to get image files by client id.');
+            throw new DeleteImageException('Failed to get image file by id.');
         }
 
         try {
             // データの削除
             $this->fileRepository->beginTransaction();
-            // 速度を優先するため `client_id` で削除
-            $this->fileRepository->deleteByClientId($inputPort->clientId());
+            $this->fileRepository->delete($image);
         } catch (PDOException $e) {
             $this->fileRepository->rollback();
             $this->logger->error($e);
-            throw new DeleteImageException('Failed to delete image record by client id.');
+            throw new DeleteImageException('Failed to delete image record by id.');
         }
 
         try {
             // ファイルの削除
-            foreach ($images as $image) {
-                $this->fileService->removeImage($image);
-            }
+            $this->fileService->removeImage($image);
             $this->fileRepository->commit();
         } catch (RemoveFileException $e) {
             $this->fileRepository->rollback();

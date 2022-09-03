@@ -7,6 +7,8 @@ use League\Container\ServiceProvider\AbstractServiceProvider;
 use Nonz250\Storage\App\Adapter\File\FileRepository;
 use Nonz250\Storage\App\Domain\File\Command\DeleteImageByClient\DeleteImageByClient;
 use Nonz250\Storage\App\Domain\File\Command\DeleteImageByClient\DeleteImageByClientInterface;
+use Nonz250\Storage\App\Domain\File\Command\DeleteImageById\DeleteImageById;
+use Nonz250\Storage\App\Domain\File\Command\DeleteImageById\DeleteImageByIdInterface;
 use Nonz250\Storage\App\Domain\File\Command\UploadImage\UploadImage;
 use Nonz250\Storage\App\Domain\File\Command\UploadImage\UploadImageInterface;
 use Nonz250\Storage\App\Domain\File\FileFactory;
@@ -16,6 +18,7 @@ use Nonz250\Storage\App\Domain\File\FileService;
 use Nonz250\Storage\App\Domain\File\FileServiceInterface;
 use Nonz250\Storage\App\Foundation\Model\Model;
 use Nonz250\Storage\App\Http\DeleteFileByClient\DeleteFileByClientAction;
+use Nonz250\Storage\App\Http\DeleteFileById\DeleteFileByIdAction;
 use Nonz250\Storage\App\Http\UploadFile\UploadFileAction;
 use Psr\Log\LoggerInterface;
 
@@ -26,6 +29,7 @@ final class FileServiceProvider extends AbstractServiceProvider
         $services = [
             UploadFileAction::class,
             DeleteFileByClientAction::class,
+            DeleteFileByIdAction::class,
         ];
         return in_array($id, $services, true);
     }
@@ -51,6 +55,13 @@ final class FileServiceProvider extends AbstractServiceProvider
             ]);
 
         $this->getContainer()
+            ->add(DeleteFileByIdAction::class)
+            ->addArguments([
+                LoggerInterface::class,
+                DeleteImageByIdInterface::class,
+            ]);
+
+        $this->getContainer()
             ->add(FileFactoryInterface::class, FileFactory::class);
 
         $this->getContainer()
@@ -69,6 +80,14 @@ final class FileServiceProvider extends AbstractServiceProvider
 
         $this->getContainer()
             ->add(DeleteImageByClientInterface::class, DeleteImageByClient::class)
+            ->addArguments([
+                LoggerInterface::class,
+                FileRepositoryInterface::class,
+                FileServiceInterface::class,
+            ]);
+
+        $this->getContainer()
+            ->add(DeleteImageByIdInterface::class, DeleteImageById::class)
             ->addArguments([
                 LoggerInterface::class,
                 FileRepositoryInterface::class,

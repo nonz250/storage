@@ -107,6 +107,22 @@ final class FileService implements FileServiceInterface
         return $thumbnailFilePath;
     }
 
+    public function getImageById(FileIdentifier $fileIdentifier): File
+    {
+        $sql = 'SELECT * FROM `files` WHERE `files`.`id` = :file_id';
+        $bindValues = new BindValues();
+        $bindValues->bindValue(':file_id', (string)$fileIdentifier);
+        $file = $this->model->first($sql, $bindValues);
+        $fileEntity = new File(
+            $fileIdentifier,
+            new ClientId((string)($file['client_id'] ?? '')),
+            new FileName((string)($file['name'] ?? '')),
+            $this->getFileStringById($fileIdentifier, new MimeType((string)($file['origin_mimetype']))),
+        );
+        $fileEntity->changeThumbnailMimeType(new MimeType((string)$file['thumbnail_mimetype']));
+        return $fileEntity;
+    }
+
     public function getImagesByClientId(ClientId $clientId): array
     {
         $sql = 'SELECT * FROM `files` WHERE `files`.`client_id` = :client_id';

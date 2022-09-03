@@ -6,6 +6,7 @@ namespace Nonz250\Storage\App\Domain\File;
 use Nonz250\Storage\App\Domain\File\Exceptions\ImageNotExistsException;
 use Nonz250\Storage\App\Domain\File\Exceptions\RemoveFileException;
 use Nonz250\Storage\App\Domain\File\Exceptions\UploadFileException;
+use Nonz250\Storage\App\Domain\File\ValueObject\FileIdentifier;
 use Nonz250\Storage\App\Shared\ValueObject\ClientId;
 
 interface FileServiceInterface
@@ -28,6 +29,15 @@ interface FileServiceInterface
      * @return string
      */
     public function uploadThumbnailImage(File $file, int $resizeWidth): string;
+
+    /**
+     * @param FileIdentifier $fileIdentifier
+     *
+     * @throws ImageNotExistsException
+     *
+     * @return File
+     */
+    public function getImageById(FileIdentifier $fileIdentifier): File;
 
     /**
      * @param ClientId $clientId

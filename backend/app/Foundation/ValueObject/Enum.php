@@ -8,17 +8,14 @@ use ReflectionObject;
 
 abstract class Enum
 {
-    /**
-     * @var mixed
-     */
-    private $value;
+    private mixed $value;
 
     /**
      * Enum constructor.
      *
      * @param mixed $value
      */
-    public function __construct($value)
+    public function __construct(mixed $value)
     {
         $ref = new ReflectionObject($this);
         $constants = $ref->getConstants();
@@ -40,7 +37,7 @@ abstract class Enum
     /**
      * @return mixed
      */
-    public function value()
+    public function value(): mixed
     {
         return $this->value;
     }

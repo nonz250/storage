@@ -64,7 +64,8 @@ final class MigrationCommand extends Command
                 $output->writeln(sprintf('Migrated %s.', basename($file)));
             }
 
-            $model->commit();
+            // TODO: トランザクションエラーが発生する？
+            // $model->commit();
         } catch (PDOException $e) {
             // NOTE: CREATE TABLE など一部のSQLはロールバックできない。
             $output->writeln('Failed migrate. Rollback without CREATE TABLE and others.');

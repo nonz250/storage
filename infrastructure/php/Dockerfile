@@ -1,4 +1,4 @@
-FROM php:7.4-fpm-alpine
+FROM php:8.0-fpm-alpine
 
 WORKDIR /var/www/app
 
@@ -19,6 +19,7 @@ RUN set -eux && \
         icu-dev \
         && \
     apk add --no-cache --virtual=.build-dependencies \
+        linux-headers \
         autoconf \
         freetype-dev \
         libjpeg-turbo-dev \

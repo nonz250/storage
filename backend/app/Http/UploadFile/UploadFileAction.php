@@ -43,6 +43,8 @@ final class UploadFileAction
         try {
             try {
                 $fileEncoded = $requestBody['file'] ?? '';
+                $fileEncoded = str_replace(' ', '+', $fileEncoded);
+                $fileEncoded = preg_replace('#^data:image/\w+;base64,#i', '', $fileEncoded);
                 $fileDecoded = base64_decode($fileEncoded, true);
 
                 if ($fileDecoded === false) {

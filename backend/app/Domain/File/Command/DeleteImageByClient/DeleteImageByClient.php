@@ -9,6 +9,7 @@ use Nonz250\Storage\App\Domain\File\FileRepositoryInterface;
 use Nonz250\Storage\App\Domain\File\FileServiceInterface;
 use PDOException;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 final class DeleteImageByClient implements DeleteImageByClientInterface
 {
@@ -36,6 +37,9 @@ final class DeleteImageByClient implements DeleteImageByClientInterface
         } catch (ImageNotExistsException $e) {
             $this->logger->error($e);
             throw new DeleteImageException('Failed to get image files by client id.');
+        } catch (Throwable $e) {
+            $this->logger->error($e);
+            throw new DeleteImageException('Internal Server Error.');
         }
 
         try {
@@ -47,6 +51,10 @@ final class DeleteImageByClient implements DeleteImageByClientInterface
             $this->fileRepository->rollback();
             $this->logger->error($e);
             throw new DeleteImageException('Failed to delete image record by client id.');
+        } catch (Throwable $e) {
+            $this->fileRepository->rollback();
+            $this->logger->error($e);
+            throw new DeleteImageException('Internal Server Error.');
         }
 
         try {
@@ -59,6 +67,10 @@ final class DeleteImageByClient implements DeleteImageByClientInterface
             $this->fileRepository->rollback();
             $this->logger->error($e);
             throw new DeleteImageException('Failed to remove image files.');
+        } catch (Throwable $e) {
+            $this->fileRepository->rollback();
+            $this->logger->error($e);
+            throw new DeleteImageException('Internal Server Error.');
         }
     }
 }

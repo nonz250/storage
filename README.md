@@ -1,5 +1,7 @@
 # nonz250's storage
 
+![](https://github.com/nonz250/storage/actions/workflows/deploy.yml/badge.svg)
+
 This project is your own storage server.
 
 ## Project setup

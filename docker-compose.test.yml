@@ -1,0 +1,5 @@
+version: "3.7"
+services:
+  app:
+    volumes:
+      - ./infrastructure/php/prod/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:cached

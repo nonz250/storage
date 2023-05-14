@@ -17,11 +17,11 @@ down: ## Stop development server.
 
 .PHONY: test
 test: lint ## Execute linter and tests.
-	docker compose exec app ./vendor/bin/phpunit
+	docker compose -f docker-compose.yml -f docker-compose.test.yml run --rm app ./vendor/bin/phpunit
 
 .PHONY: pr
 pr: lint ## Commands to execute before pull request.
-	docker compose exec app ./vendor/bin/phpunit --coverage-text
+	docker compose -f docker-compose.yml -f docker-compose.test.yml run --rm app ./vendor/bin/phpunit --coverage-text
 
 # Base commands.
 .PHONY: docker-build
@@ -47,7 +47,7 @@ clean: ## Clean container.
 
 .PHONY: lint
 lint: ## Execute linter.
-	docker compose exec app php-cs-fixer fix -vv
+	docker compose -f docker-compose.yml -f docker-compose.test.yml run --rm app php-cs-fixer fix -vv
 
 # Other commands.
 .PHONY: help

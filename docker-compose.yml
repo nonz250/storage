@@ -22,6 +22,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./backend:/var/www/app:cached
+      - ./infrastructure/php/dev/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:cached
     working_dir: /var/www/app
     networks:
       internal-network:

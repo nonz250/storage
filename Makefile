@@ -13,15 +13,17 @@ up: ## Start development server.
 
 .PHONY: down
 down: ## Stop development server.
-	docker compose down
+	docker compose down --remove-orphans
 
 .PHONY: test
 test: lint ## Execute linter and tests.
-	docker compose -f docker-compose.yml -f docker-compose.test.yml run --rm app ./vendor/bin/phpunit
+	docker compose -f docker-compose.test.yml run --rm app-test php bin/console migrate
+	docker compose -f docker-compose.test.yml run --rm app-test ./vendor/bin/phpunit
+	docker compose -f docker-compose.test.yml stop db-test
 
 .PHONY: pr
 pr: lint ## Commands to execute before pull request.
-	docker compose -f docker-compose.yml -f docker-compose.test.yml run --rm app ./vendor/bin/phpunit --coverage-text
+	docker compose -f docker-compose.test.yml run --rm app-test ./vendor/bin/phpunit --coverage-text
 
 # Base commands.
 .PHONY: docker-build
@@ -42,12 +44,12 @@ storage-link: ## Generate storage symbolic link.
 
 .PHONY: clean
 clean: ## Clean container.
-	docker compose down --volumes
+	docker compose down --volumes --remove-orphans
 	rm -rf ./backend/vendor
 
 .PHONY: lint
 lint: ## Execute linter.
-	docker compose -f docker-compose.yml -f docker-compose.test.yml run --rm app php-cs-fixer fix -vv
+	docker compose -f docker-compose.test.yml run --rm app-test php-cs-fixer fix -vv
 
 # Other commands.
 .PHONY: help

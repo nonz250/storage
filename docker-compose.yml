@@ -30,8 +30,6 @@ services:
   db:
     image: mysql:5.7
     container_name: db
-    ports:
-      - "127.0.0.1:3306:3306"
     environment:
       TZ: Asia/Tokyo
       MYSQL_ROOT_PASSWORD: secret

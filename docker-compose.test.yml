@@ -1,5 +1,31 @@
 version: "3.7"
 services:
-  app:
+  app-test:
+    container_name: app-test
+    extends:
+      file: ./docker-compose.yml
+      service: app
+    environment:
+      DB_HOST: db-test
     volumes:
-      - ./infrastructure/php/prod/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:cached
+      - ./infrastructure/php/test/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:cached
+    depends_on:
+      - db-test
+
+  db-test:
+    container_name: db-test
+    extends:
+      file: ./docker-compose.yml
+      service: db
+    ports:
+      - "127.0.0.1:13306:3306"
+    volumes:
+      - storage-test-data:/var/lib/mysql:cache
+
+networks:
+  internal-network:
+    driver: bridge
+
+volumes:
+  storage-test-data:
+    driver: local

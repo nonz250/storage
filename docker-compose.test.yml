@@ -7,6 +7,10 @@ services:
       service: app
     environment:
       DB_HOST: db-test
+      DB_PORT: 3306
+      DB_NAME: storage
+      DB_USERNAME: root
+      DB_PASSWORD: secret
     volumes:
       - ./infrastructure/php/test/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:cached
     depends_on:

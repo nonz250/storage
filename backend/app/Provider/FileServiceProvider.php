@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Nonz250\Storage\App\Provider;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
+use League\Container\ServiceProvider\BootableServiceProviderInterface;
 use Nonz250\Storage\App\Adapter\File\FileRepository;
 use Nonz250\Storage\App\Domain\File\Command\DeleteImageByClient\DeleteImageByClient;
 use Nonz250\Storage\App\Domain\File\Command\DeleteImageByClient\DeleteImageByClientInterface;
@@ -22,7 +23,7 @@ use Nonz250\Storage\App\Http\DeleteFileById\DeleteFileByIdAction;
 use Nonz250\Storage\App\Http\UploadFile\UploadFileAction;
 use Psr\Log\LoggerInterface;
 
-final class FileServiceProvider extends AbstractServiceProvider
+final class FileServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface
 {
     public function provides(string $id): bool
     {
@@ -35,6 +36,10 @@ final class FileServiceProvider extends AbstractServiceProvider
     }
 
     public function register(): void
+    {
+    }
+
+    public function boot(): void
     {
         $this->getContainer()
             ->add(FileRepositoryInterface::class, FileRepository::class)

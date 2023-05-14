@@ -28,37 +28,7 @@ $request = Laminas\Diactoros\ServerRequestFactory::fromGlobals(
 /**
  * Dependency injection.
  */
-$container = new League\Container\Container();
-$container->add(PDO::class)
-    ->addArgument(sprintf(
-        'mysql:dbname=%s;host=%s;port=%s',
-        Nonz250\Storage\App\Foundation\App::env('DB_NAME'),
-        Nonz250\Storage\App\Foundation\App::env('DB_HOST'),
-        Nonz250\Storage\App\Foundation\App::env('DB_PORT')
-    ))
-    ->addArgument(Nonz250\Storage\App\Foundation\App::env('DB_USERNAME'))
-    ->addArgument(Nonz250\Storage\App\Foundation\App::env('DB_PASSWORD'));
-
-$container->add(Nonz250\Storage\App\Foundation\Model\Model::class)
-    ->addArgument(PDO::class);
-
-$container->add(Psr\Log\LoggerInterface::class, Monolog\Logger::class)
-    ->addArgument('storage')
-    ->addMethodCall('pushHandler', [
-        (new Monolog\Handler\RotatingFileHandler(
-            sprintf('%s/../logs/application.log', __DIR__),
-            30,
-            Nonz250\Storage\App\Foundation\App::environment(Nonz250\Storage\App\Shared\ValueObject\Environment::PRODUCTION)
-                ? Monolog\Logger::INFO
-                : Monolog\Logger::DEBUG,
-        ))->setFormatter(new Monolog\Formatter\JsonFormatter()),
-    ]);
-
-$container->add(Nonz250\Storage\App\Http\ParseRequest\ParseRequestMiddleware::class)
-    ->addArgument(Psr\Log\LoggerInterface::class);
-
-$container->addServiceProvider(new Nonz250\Storage\App\Provider\ClientServiceProvider);
-$container->addServiceProvider(new Nonz250\Storage\App\Provider\FileServiceProvider);
+$container = Nonz250\Storage\App\Adapter\Bootstrap\Bootstrap::settingContainers();
 
 /**
  * Setting router.

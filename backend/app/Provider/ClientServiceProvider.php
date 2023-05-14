@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Nonz250\Storage\App\Provider;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
+use League\Container\ServiceProvider\BootableServiceProviderInterface;
 use Nonz250\Storage\App\Adapter\Auth\ClientRepository;
 use Nonz250\Storage\App\Domain\Auth\ClientRepositoryInterface;
 use Nonz250\Storage\App\Domain\Auth\Command\DigestAuth\DigestAuth;
@@ -17,7 +18,7 @@ use Nonz250\Storage\App\Http\Auth\AuthMiddleware;
 use Nonz250\Storage\App\Http\CreateClient\CreateClientAction;
 use Psr\Log\LoggerInterface;
 
-final class ClientServiceProvider extends AbstractServiceProvider
+final class ClientServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface
 {
     public function provides(string $id): bool
     {
@@ -29,6 +30,10 @@ final class ClientServiceProvider extends AbstractServiceProvider
     }
 
     public function register(): void
+    {
+    }
+
+    public function boot(): void
     {
         $this->getContainer()
             ->add(ClientRepositoryInterface::class, ClientRepository::class)

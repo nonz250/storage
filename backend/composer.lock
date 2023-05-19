@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ce55f6690c1134dd05b52ebfbb598324",
+    "content-hash": "b8656d002d5dbf8bdad8b1cd4c67fa17",
     "packages": [
         {
             "name": "crell/api-problem",
@@ -4551,7 +4551,6 @@
     "platform": {
         "php": "^8.0",
         "ext-fileinfo": "*",
-        "ext-gd": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
         "ext-pdo": "*"

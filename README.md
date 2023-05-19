@@ -39,5 +39,5 @@ make pr
 ## Execute code fixer
 
 ```shell
-make fix
+make lint
 ```

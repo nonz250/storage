@@ -27,7 +27,6 @@
         </include>
         <exclude>
             <!-- TODO: Model / Repository testing -->
-            <file>app/Adapter/File/FileRepository.php</file>
             <file>app/Foundation/Repository.php</file>
             <!-- TODO: Commands testing -->
             <directory suffix=".php">app/Console/Command</directory>

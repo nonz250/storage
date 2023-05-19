@@ -23,7 +23,7 @@ final class StringIdentifierTest extends TestCase
                 $this->identifier = $identifier;
             }
         };
-        $this->assertObjectHasAttribute('identifier', $identifier);
+        $this->assertObjectHasProperty('identifier', $identifier);
         $this->assertSame($expected, (string)$identifier);
         $this->assertTrue($identifier->equals(clone $identifier));
     }

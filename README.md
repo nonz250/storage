@@ -33,7 +33,7 @@ make test
 Please execute this command before pull request.
 
 ```shell
-make prod
+make pr
 ```
 
 ## Execute code fixer

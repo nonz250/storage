@@ -2,7 +2,7 @@ ROOT_PATH := /var/www/app
 
 # Major commands.
 .PHONY: setup
-setup: docker-build up composer-install storage-link migrate ## Setup project.
+setup: docker-build up test-up composer-install storage-link migrate ## Setup project.
 
 .PHONY: reset
 reset: clean setup ## Reset container.
@@ -14,6 +14,11 @@ up: ## Start development server.
 .PHONY: down
 down: ## Stop development server.
 	docker compose down --remove-orphans
+	docker compose -f docker-compose.test.yml down --remove-orphans
+
+.PHONY: test-up
+test-up: ## Start testing server.
+	docker compose -f docker-compose.test.yml up -d
 
 .PHONY: test
 test: lint ## Execute linter and tests.
@@ -44,6 +49,7 @@ storage-link: ## Generate storage symbolic link.
 .PHONY: clean
 clean: ## Clean container.
 	docker compose down --volumes --remove-orphans
+	docker compose -f docker-compose.test.yml down --volumes --remove-orphans
 	rm -rf ./backend/vendor
 
 .PHONY: lint

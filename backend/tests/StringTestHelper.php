@@ -63,4 +63,13 @@ final class StringTestHelper
             return '';
         }
     }
+
+    public static function randomImageString(int $width = 1, int $height = 1): string
+    {
+        ob_start();
+        $gd = imagecreate($width, $height);
+        imagejpeg($gd);
+        $content = ob_get_clean();
+        return preg_replace('#^data:image/\w+;base64,#i', '', $content);
+    }
 }

@@ -63,7 +63,7 @@ final class Model
         try {
             $statement = $this->execute($sql, $bindValues);
         } catch (PDOException $e) {
-            throw new PDOException('Failed execute select.');
+            throw new PDOException('Failed execute select.', (int)$e->getCode(), $e);
         }
 
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -80,7 +80,7 @@ final class Model
         try {
             $statement = $this->execute($sql, $bindValues);
         } catch (PDOException $e) {
-            throw new PDOException('Failed execute select.');
+            throw new PDOException('Failed execute select.', (int)$e->getCode(), $e);
         }
 
         $result = $statement->fetch(PDO::FETCH_ASSOC);
@@ -97,7 +97,7 @@ final class Model
         try {
             $this->execute($sql, $bindValues);
         } catch (PDOException $e) {
-            throw new PDOException('Failed execute select.');
+            throw new PDOException('Failed execute insert.', (int)$e->getCode(), $e);
         }
     }
 
@@ -106,7 +106,7 @@ final class Model
         try {
             $this->execute($sql, $bindValues);
         } catch (PDOException $e) {
-            throw new PDOException('Failed execute delete.');
+            throw new PDOException('Failed execute delete.', (int)$e->getCode(), $e);
         }
     }
 }

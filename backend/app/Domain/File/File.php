@@ -65,7 +65,7 @@ final class File
         try {
             $mimeType = new MimeType($buffer);
         } catch (InvalidArgumentException $e) {
-            throw new MimeTypeException('Invalid mimetype.');
+            throw new MimeTypeException('Invalid mimetype.', $e);
         }
 
         return $mimeType;

@@ -8,8 +8,11 @@ use Throwable;
 
 final class HttpBadRequestException extends HttpException
 {
-    public function __construct($description = '', $message = 'BadRequest.', $code = 0, Throwable $previous = null)
-    {
-        parent::__construct(StatusCodeInterface::STATUS_BAD_REQUEST, $description, $message, $code, $previous);
+    public function __construct(
+        string $description = '',
+        Throwable $previous = null,
+        string $message = 'BadRequest.',
+    ) {
+        parent::__construct(StatusCodeInterface::STATUS_BAD_REQUEST, $description, $message, $previous);
     }
 }

@@ -21,10 +21,9 @@ abstract class HttpException extends RuntimeException implements HttpExceptionIn
         int $statusCode = StatusCodeInterface::STATUS_OK,
         $description = '',
         $message = '',
-        $code = 0,
         Throwable $previous = null
     ) {
-        parent::__construct($message, $code, $previous);
+        parent::__construct($message, 0, $previous);
         $this->statusCode = $statusCode;
         $this->description = $description;
     }

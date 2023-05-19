@@ -86,7 +86,7 @@ final class Model
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         if ($result === false) {
-            throw new PDOException('Failed fetch all.');
+            throw new PDOException('Failed fetch first.');
         }
 
         return $result;

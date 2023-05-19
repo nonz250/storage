@@ -8,22 +8,17 @@ use Nonz250\Storage\App\Domain\File\Exceptions\RemoveFileException;
 use Nonz250\Storage\App\Domain\File\FileRepositoryInterface;
 use Nonz250\Storage\App\Domain\File\FileServiceInterface;
 use PDOException;
-use Psr\Log\LoggerInterface;
 
 final class DeleteImageById implements DeleteImageByIdInterface
 {
-    private LoggerInterface $logger;
-
     private FileRepositoryInterface $fileRepository;
 
     private FileServiceInterface $fileService;
 
     public function __construct(
-        LoggerInterface $logger,
         FileRepositoryInterface $fileRepository,
         FileServiceInterface $fileService
     ) {
-        $this->logger = $logger;
         $this->fileRepository = $fileRepository;
         $this->fileService = $fileService;
     }
@@ -34,18 +29,17 @@ final class DeleteImageById implements DeleteImageByIdInterface
             // 削除する画像データを取得
             $image = $this->fileService->getImageById($inputPort->fileIdentifier());
         } catch (ImageNotExistsException $e) {
-            $this->logger->error($e);
-            throw new DeleteImageException('Failed to get image file by id.');
+            throw new DeleteImageException('Failed to get image file by id.', $e);
         }
+
+        $this->fileRepository->beginTransaction();
 
         try {
             // データの削除
-            $this->fileRepository->beginTransaction();
             $this->fileRepository->delete($image);
         } catch (PDOException $e) {
             $this->fileRepository->rollback();
-            $this->logger->error($e);
-            throw new DeleteImageException('Failed to delete image record by id.');
+            throw new DeleteImageException('Failed to delete image record by id.', $e);
         }
 
         try {
@@ -54,8 +48,7 @@ final class DeleteImageById implements DeleteImageByIdInterface
             $this->fileRepository->commit();
         } catch (RemoveFileException $e) {
             $this->fileRepository->rollback();
-            $this->logger->error($e);
-            throw new DeleteImageException('Failed to remove image files.');
+            throw new DeleteImageException('Failed to remove image files.', $e);
         }
     }
 }

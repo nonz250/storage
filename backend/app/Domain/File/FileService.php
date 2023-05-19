@@ -166,11 +166,12 @@ final class FileService implements FileServiceInterface
     private function getFileStringById(FileIdentifier $fileIdentifier, MimeType $mimeType): FileString
     {
         $originImageFullPath = getcwd() . self::UPLOAD_ORIGIN_DIRECTORY . DIRECTORY_SEPARATOR . $fileIdentifier . $mimeType->extension();
-        $fileString = file_get_contents($originImageFullPath);
+        $fileString = @file_get_contents($originImageFullPath);
 
         if ($fileString === false) {
             throw new ImageNotExistsException('Image files not exists.');
         }
+
         return new FileString($fileString);
     }
 }

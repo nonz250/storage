@@ -40,13 +40,13 @@ final class UploadImage implements UploadImageInterface
         // Save Webp extension.
         $file->changeThumbnailMimeType($inputPort->mimeType());
 
+        $this->fileRepository->beginTransaction();
+
         try {
-            $this->fileRepository->beginTransaction();
             $this->fileRepository->create($file);
         } catch (Throwable $e) {
             $this->fileRepository->rollback();
-            $this->logger->error($e);
-            throw new UploadFileException('Failed to register database.');
+            throw new UploadFileException('Failed to register database.', $e);
         }
 
         try {
@@ -54,8 +54,7 @@ final class UploadImage implements UploadImageInterface
             $this->logger->debug($originFilePath);
         } catch (Throwable $e) {
             $this->fileRepository->rollback();
-            $this->logger->error($e);
-            throw new UploadFileException('Failed to upload origin file.');
+            throw new UploadFileException('Failed to upload origin file.', $e);
         }
 
         try {
@@ -67,8 +66,8 @@ final class UploadImage implements UploadImageInterface
             if (!unlink($originFilePath)) {
                 $this->logger->error(sprintf('Failed to delete origin file. -- %s', $originFilePath));
             }
-            $this->logger->error($e);
-            throw new UploadFileException('Failed to upload thumbnail file.');
+
+            throw new UploadFileException('Failed to upload thumbnail file.', $e);
         }
 
         $this->fileRepository->commit();

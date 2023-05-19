@@ -8,23 +8,18 @@ use Nonz250\Storage\App\Domain\File\Exceptions\RemoveFileException;
 use Nonz250\Storage\App\Domain\File\FileRepositoryInterface;
 use Nonz250\Storage\App\Domain\File\FileServiceInterface;
 use PDOException;
-use Psr\Log\LoggerInterface;
 use Throwable;
 
 final class DeleteImageByClient implements DeleteImageByClientInterface
 {
-    private LoggerInterface $logger;
-
     private FileRepositoryInterface $fileRepository;
 
     private FileServiceInterface $fileService;
 
     public function __construct(
-        LoggerInterface $logger,
         FileRepositoryInterface $fileRepository,
         FileServiceInterface $fileService
     ) {
-        $this->logger = $logger;
         $this->fileRepository = $fileRepository;
         $this->fileService = $fileService;
     }
@@ -35,26 +30,23 @@ final class DeleteImageByClient implements DeleteImageByClientInterface
             // 削除する画像データを取得
             $images = $this->fileService->getImagesByClientId($inputPort->clientId());
         } catch (ImageNotExistsException $e) {
-            $this->logger->error($e);
-            throw new DeleteImageException('Failed to get image files by client id.');
+            throw new DeleteImageException('Failed to get image files by client id.', $e);
         } catch (Throwable $e) {
-            $this->logger->error($e);
-            throw new DeleteImageException('Internal Server Error.');
+            throw new DeleteImageException('Internal Server Error.', $e);
         }
+
+        $this->fileRepository->beginTransaction();
 
         try {
             // データの削除
-            $this->fileRepository->beginTransaction();
             // 速度を優先するため `client_id` で削除
             $this->fileRepository->deleteByClientId($inputPort->clientId());
         } catch (PDOException $e) {
             $this->fileRepository->rollback();
-            $this->logger->error($e);
-            throw new DeleteImageException('Failed to delete image record by client id.');
+            throw new DeleteImageException('Failed to delete image record by client id.', $e);
         } catch (Throwable $e) {
             $this->fileRepository->rollback();
-            $this->logger->error($e);
-            throw new DeleteImageException('Internal Server Error.');
+            throw new DeleteImageException('Internal Server Error.', $e);
         }
 
         try {
@@ -65,12 +57,10 @@ final class DeleteImageByClient implements DeleteImageByClientInterface
             $this->fileRepository->commit();
         } catch (RemoveFileException $e) {
             $this->fileRepository->rollback();
-            $this->logger->error($e);
-            throw new DeleteImageException('Failed to remove image files.');
+            throw new DeleteImageException('Failed to remove image files.', $e);
         } catch (Throwable $e) {
             $this->fileRepository->rollback();
-            $this->logger->error($e);
-            throw new DeleteImageException('Internal Server Error.');
+            throw new DeleteImageException('Internal Server Error.', $e);
         }
     }
 }

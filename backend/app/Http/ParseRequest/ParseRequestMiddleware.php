@@ -39,13 +39,12 @@ final class ParseRequestMiddleware implements MiddlewareInterface
                 $contents = $request->getBody()->getContents();
                 $parsedBody = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
             } catch (EmptyContentTypeException|InvalidContentTypeException $e) {
-                $this->logger->error($e);
-                throw new HttpBadRequestException($e->getMessage());
+                throw new HttpBadRequestException($e->getMessage(), $e);
             } catch (JsonException $e) {
-                $this->logger->error($e);
-                throw new HttpBadRequestException('Json syntax error.');
+                throw new HttpBadRequestException('Json syntax error.', $e);
             }
         } catch (HttpBadRequestException $e) {
+            $this->logger->error($e);
             return $e->getApiProblemResponse();
         }
 

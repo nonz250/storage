@@ -9,7 +9,6 @@ use Laminas\Diactoros\ServerRequest;
 use Nonz250\Storage\App\Domain\File\Command\UploadImage\UploadImageInput;
 use Nonz250\Storage\App\Domain\File\Command\UploadImage\UploadImageInterface;
 use Nonz250\Storage\App\Domain\File\Exceptions\MimeTypeException;
-use Nonz250\Storage\App\Domain\File\Exceptions\UploadFileException;
 use Nonz250\Storage\App\Domain\File\ValueObject\FileName;
 use Nonz250\Storage\App\Domain\File\ValueObject\FileString;
 use Nonz250\Storage\App\Domain\File\ValueObject\MimeType;
@@ -56,13 +55,12 @@ final class UploadFileAction
                 $clientId = new ClientId((string)$requestBody['client_id']);
                 $mimeType = new MimeType($requestBody['mimetype'] ?? MimeType::MIME_TYPE_WEBP);
             } catch (InvalidArgumentException $e) {
-                $this->logger->error($e);
-                throw new HttpBadRequestException($e->getMessage());
+                throw new HttpBadRequestException($e->getMessage(), $e);
             } catch (Base64Exception $e) {
-                $this->logger->error($e);
-                throw new HttpInternalErrorException($e->getMessage());
+                throw new HttpInternalErrorException($e);
             }
         } catch (HttpException $e) {
+            $this->logger->error($e);
             return $e->getApiProblemResponse();
         }
 
@@ -71,14 +69,9 @@ final class UploadFileAction
                 $input = new UploadImageInput($clientId, $fileName, $fileString, $mimeType);
                 $output = $this->uploadImage->process($input);
             } catch (MimeTypeException $e) {
-                $this->logger->error($e);
-                throw new HttpBadRequestException('Invalid mimetype.');
-            } catch (UploadFileException $e) {
-                $this->logger->error($e);
-                throw new HttpInternalErrorException($e->getMessage());
+                throw new HttpBadRequestException('Invalid mimetype.', $e);
             } catch (Throwable $e) {
-                $this->logger->error($e);
-                throw new HttpInternalErrorException();
+                throw new HttpInternalErrorException($e);
             }
         } catch (HttpException $e) {
             $this->logger->error($e);

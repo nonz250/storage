@@ -9,12 +9,13 @@ use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Diactoros\ServerRequest;
 use Nonz250\Storage\App\Domain\File\Command\DeleteImageByClient\DeleteImageByClientInput;
 use Nonz250\Storage\App\Domain\File\Command\DeleteImageByClient\DeleteImageByClientInterface;
-use Nonz250\Storage\App\Domain\File\Command\DeleteImageByClient\DeleteImageException;
 use Nonz250\Storage\App\Foundation\Exceptions\HttpBadRequestException;
 use Nonz250\Storage\App\Foundation\Exceptions\HttpException;
 use Nonz250\Storage\App\Foundation\Exceptions\HttpInternalErrorException;
 use Nonz250\Storage\App\Shared\ValueObject\ClientId;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 final class DeleteFileByClientAction
 {
@@ -30,7 +31,7 @@ final class DeleteFileByClientAction
         $this->deleteImageByClient = $deleteImageByClient;
     }
 
-    public function __invoke(ServerRequest $request): JsonResponse
+    public function __invoke(ServerRequest $request): JsonResponse|ResponseInterface
     {
         $requestBody = $request->getParsedBody();
 
@@ -38,16 +39,14 @@ final class DeleteFileByClientAction
             try {
                 $clientId = new ClientId((string)$requestBody['client_id']);
             } catch (InvalidArgumentException $e) {
-                $this->logger->error($e);
-                throw new HttpBadRequestException($e->getMessage());
+                throw new HttpBadRequestException($e->getMessage(), $e);
             }
 
             try {
                 $input = new DeleteImageByClientInput($clientId);
                 $this->deleteImageByClient->process($input);
-            } catch (DeleteImageException $e) {
-                $this->logger->error($e);
-                throw new HttpInternalErrorException($e->getMessage());
+            } catch (Throwable $e) {
+                throw new HttpInternalErrorException($e);
             }
         } catch (HttpException $e) {
             $this->logger->error($e);

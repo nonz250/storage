@@ -31,7 +31,7 @@ final class CreateClientAction
         $this->createClient = $createClient;
     }
 
-    public function __invoke(ServerRequest $request): ResponseInterface
+    public function __invoke(ServerRequest $request): JsonResponse|ResponseInterface
     {
         $data = $request->getParsedBody();
 
@@ -40,20 +40,14 @@ final class CreateClientAction
                 $appName = new AppName($data['appName'] ?? '');
                 $clientEmail = new ClientEmail($data['email'] ?? '');
             } catch (InvalidArgumentException $e) {
-                $this->logger->error($e);
-                throw new HttpBadRequestException($e->getMessage());
+                throw new HttpBadRequestException($e->getMessage(), $e);
             }
-        } catch (HttpException $e) {
-            return $e->getApiProblemResponse();
-        }
 
-        try {
             try {
                 $input = new CreateClientInput($appName, $clientEmail);
                 $client = $this->createClient->process($input);
             } catch (Throwable $e) {
-                $this->logger->error($e);
-                throw new HttpInternalErrorException('Failed to create client.');
+                throw new HttpInternalErrorException($e);
             }
         } catch (HttpException $e) {
             $this->logger->error($e);

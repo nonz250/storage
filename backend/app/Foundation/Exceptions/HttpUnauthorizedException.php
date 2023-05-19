@@ -8,8 +8,16 @@ use Throwable;
 
 final class HttpUnauthorizedException extends HttpException
 {
-    public function __construct($description = '', $message = 'Unauthorized.', $code = 0, Throwable $previous = null)
-    {
-        parent::__construct(StatusCodeInterface::STATUS_UNAUTHORIZED, $description, $message, $code, $previous);
+    public function __construct(
+        string $description = '',
+        Throwable $previous = null,
+        string $message = 'Unauthorized.'
+    ) {
+        parent::__construct(
+            StatusCodeInterface::STATUS_UNAUTHORIZED,
+            $description,
+            $message,
+            $previous
+        );
     }
 }

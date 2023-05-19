@@ -50,15 +50,12 @@ final class AuthMiddleware implements MiddlewareInterface
             try {
                 $input = new DigestAuthInput($digests[0], $request->getMethod(), App::env('DIGEST_NONCE'));
                 $this->digestAuth->process($input);
-            } catch (InvalidArgumentException|DataNotFoundException $e) {
-                $this->logger->error($e);
-                throw new HttpBadRequestException($e->getMessage());
-            } catch (InvalidResponseException $e) {
-                $this->logger->error($e);
-                throw new HttpUnauthorizedException('Please check user.');
+            } catch (InvalidArgumentException $e) {
+                throw new HttpBadRequestException($e->getMessage(), $e);
+            } catch (DataNotFoundException|InvalidResponseException $e) {
+                throw new HttpUnauthorizedException('Please check user.', $e);
             } catch (Throwable $e) {
-                $this->logger->error($e);
-                throw new HttpInternalErrorException($e->getMessage());
+                throw new HttpInternalErrorException($e);
             }
         } catch (HttpException $e) {
             $this->logger->error($e);

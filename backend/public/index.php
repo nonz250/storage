@@ -59,17 +59,29 @@ if (Nonz250\Storage\App\Foundation\App::environment(Nonz250\Storage\App\Shared\V
         });
 }
 
-// Production routing.
-$router
-    ->group('/', static function (League\Route\RouteGroup $router) {
-        $router->post('/clients', Nonz250\Storage\App\Http\CreateClient\CreateClientAction::class);
-        $router->post('/files', Nonz250\Storage\App\Http\UploadFile\UploadFileAction::class);
-        $router->delete('/files', Nonz250\Storage\App\Http\DeleteFileByClient\DeleteFileByClientAction::class);
-        $router->delete('/files/{fileIdentifier}', Nonz250\Storage\App\Http\DeleteFileById\DeleteFileByIdAction::class);
-    })
-    ->middleware($container->get(Nonz250\Storage\App\Http\Auth\AuthMiddleware::class))
-    ->setStrategy($strategy);
+try {
+    // Production routing.
+    $router
+        ->group('/', static function (League\Route\RouteGroup $router) {
+            $router->post('/clients', Nonz250\Storage\App\Http\CreateClient\CreateClientAction::class);
+            $router->post('/files', Nonz250\Storage\App\Http\UploadFile\UploadFileAction::class);
+            $router->delete('/files', Nonz250\Storage\App\Http\DeleteFileByClient\DeleteFileByClientAction::class);
+            $router->delete('/files/{fileIdentifier}', Nonz250\Storage\App\Http\DeleteFileById\DeleteFileByIdAction::class);
+        })
+        ->middleware($container->get(Nonz250\Storage\App\Http\Auth\AuthMiddleware::class))
+        ->setStrategy($strategy);
 
-$response = $router->dispatch($request);
+    $response = $router->dispatch($request);
 
-(new Laminas\HttpHandlerRunner\Emitter\SapiEmitter)->emit($response);
+    (new Laminas\HttpHandlerRunner\Emitter\SapiEmitter)->emit($response);
+
+} catch (PDOException|Throwable $e) {
+    $internalServerError = new Nonz250\Storage\App\Foundation\Exceptions\HttpInternalErrorException($e);
+    header('Content-Type: application/json');
+    http_response_code($internalServerError->getStatusCode());
+    echo $internalServerError
+        ->getApiProblemResponse()
+        ->getBody()
+        ->getContents();
+    exit();
+}

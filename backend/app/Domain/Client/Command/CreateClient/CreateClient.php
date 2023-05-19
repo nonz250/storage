@@ -26,13 +26,14 @@ final class CreateClient implements CreateClientInterface
     {
         $client = $this->clientFactory->newClient($inputPort->appName(), $inputPort->clientEmail());
 
+        $this->clientRepository->beginTransaction();
+
         try {
-            $this->clientRepository->beginTransaction();
             $this->clientRepository->create($client);
             $this->clientRepository->commit();
         } catch (Throwable $e) {
             $this->clientRepository->rollback();
-            throw new CreateClientException('Failed to create client.');
+            throw new CreateClientException('Failed to create client.', $e);
         }
         return [
             'clientId' => (string)$client->clientId(),

@@ -61,7 +61,6 @@ $rules = [
             'square_brace_block',
             'throw',
             'use',
-            'use_trait',
         ],
     ],
     'no_leading_import_slash' => true,

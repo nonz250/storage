@@ -33,6 +33,7 @@ pr: lint test ## Commands to execute before pull request.
 .PHONY: docker-build
 docker-build: ## Build Docker Containers.
 	docker compose build
+	docker compose -f docker-compose.test.yml build
 
 .PHONY: composer-install
 composer-install: ## Install composer packages.

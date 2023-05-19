@@ -18,12 +18,11 @@ down: ## Stop development server.
 .PHONY: test
 test: lint ## Execute linter and tests.
 	docker compose -f docker-compose.test.yml run --rm app-test php bin/console migrate
-	docker compose -f docker-compose.test.yml run --rm app-test ./vendor/bin/phpunit
+	docker compose -f docker-compose.test.yml run --rm app-test ./vendor/bin/phpunit --coverage-text
 	docker compose -f docker-compose.test.yml stop db-test
 
 .PHONY: pr
-pr: lint ## Commands to execute before pull request.
-	docker compose -f docker-compose.test.yml run --rm app-test ./vendor/bin/phpunit --coverage-text
+pr: lint test ## Commands to execute before pull request.
 
 # Base commands.
 .PHONY: docker-build

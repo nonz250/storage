@@ -42,40 +42,40 @@ final class FileServiceProvider extends AbstractServiceProvider implements Boota
     public function boot(): void
     {
         $this->getContainer()
-            ->add(FileRepositoryInterface::class, FileRepository::class)
+            ->addShared(FileRepositoryInterface::class, FileRepository::class)
             ->addArgument(Model::class);
 
         $this->getContainer()
-            ->add(UploadFileAction::class)
+            ->addShared(UploadFileAction::class)
             ->addArguments([
                 LoggerInterface::class,
                 UploadImageInterface::class,
             ]);
 
         $this->getContainer()
-            ->add(DeleteFileByClientAction::class)
+            ->addShared(DeleteFileByClientAction::class)
             ->addArguments([
                 LoggerInterface::class,
                 DeleteImageByClientInterface::class,
             ]);
 
         $this->getContainer()
-            ->add(DeleteFileByIdAction::class)
+            ->addShared(DeleteFileByIdAction::class)
             ->addArguments([
                 LoggerInterface::class,
                 DeleteImageByIdInterface::class,
             ]);
 
         $this->getContainer()
-            ->add(FileFactoryInterface::class, FileFactory::class);
+            ->addShared(FileFactoryInterface::class, FileFactory::class);
 
         $this->getContainer()
-            ->add(FileServiceInterface::class, FileService::class)
+            ->addShared(FileServiceInterface::class, FileService::class)
             ->addArgument(LoggerInterface::class)
             ->addArgument(Model::class);
 
         $this->getContainer()
-            ->add(UploadImageInterface::class, UploadImage::class)
+            ->addShared(UploadImageInterface::class, UploadImage::class)
             ->addArguments([
                 LoggerInterface::class,
                 FileFactoryInterface::class,
@@ -84,7 +84,7 @@ final class FileServiceProvider extends AbstractServiceProvider implements Boota
             ]);
 
         $this->getContainer()
-            ->add(DeleteImageByClientInterface::class, DeleteImageByClient::class)
+            ->addShared(DeleteImageByClientInterface::class, DeleteImageByClient::class)
             ->addArguments([
                 LoggerInterface::class,
                 FileRepositoryInterface::class,
@@ -92,7 +92,7 @@ final class FileServiceProvider extends AbstractServiceProvider implements Boota
             ]);
 
         $this->getContainer()
-            ->add(DeleteImageByIdInterface::class, DeleteImageById::class)
+            ->addShared(DeleteImageByIdInterface::class, DeleteImageById::class)
             ->addArguments([
                 LoggerInterface::class,
                 FileRepositoryInterface::class,

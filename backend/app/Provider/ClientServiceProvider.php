@@ -36,32 +36,32 @@ final class ClientServiceProvider extends AbstractServiceProvider implements Boo
     public function boot(): void
     {
         $this->getContainer()
-            ->add(ClientRepositoryInterface::class, ClientRepository::class)
+            ->addShared(ClientRepositoryInterface::class, ClientRepository::class)
             ->addArgument(Model::class);
 
         $this->getContainer()
-            ->add(DigestAuthInterface::class, DigestAuth::class)
+            ->addShared(DigestAuthInterface::class, DigestAuth::class)
             ->addArgument(ClientRepositoryInterface::class);
 
         $this->getContainer()
-            ->add(AuthMiddleware::class)
+            ->addShared(AuthMiddleware::class)
             ->addArguments([
                 LoggerInterface::class,
                 DigestAuthInterface::class,
             ]);
 
         $this->getContainer()
-            ->add(CreateClientAction::class)
+            ->addShared(CreateClientAction::class)
             ->addArguments([
                 LoggerInterface::class,
                 CreateClientInterface::class,
             ]);
 
         $this->getContainer()
-            ->add(ClientFactoryInterface::class, ClientFactory::class);
+            ->addShared(ClientFactoryInterface::class, ClientFactory::class);
 
         $this->getContainer()
-            ->add(CreateClientInterface::class, CreateClient::class)
+            ->addShared(CreateClientInterface::class, CreateClient::class)
             ->addArgument(ClientFactoryInterface::class)
             ->addArgument(ClientRepositoryInterface::class);
     }

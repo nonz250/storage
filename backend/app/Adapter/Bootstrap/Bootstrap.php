@@ -26,7 +26,7 @@ final class Bootstrap
     {
         $container = new Container();
 
-        $container->add(PDO::class)
+        $container->addShared(PDO::class)
             ->addArgument(sprintf(
                 'mysql:dbname=%s;host=%s;port=%s',
                 App::env('DB_NAME'),
@@ -36,10 +36,10 @@ final class Bootstrap
             ->addArgument(App::env('DB_USERNAME'))
             ->addArgument(App::env('DB_PASSWORD'));
 
-        $container->add(Model::class)
+        $container->addShared(Model::class)
             ->addArgument(PDO::class);
 
-        $container->add(LoggerInterface::class, Logger::class)
+        $container->addShared(LoggerInterface::class, Logger::class)
             ->addArgument('storage')
             ->addMethodCall('pushHandler', [
                 (new RotatingFileHandler(
@@ -51,7 +51,7 @@ final class Bootstrap
                 ))->setFormatter(new JsonFormatter()),
             ]);
 
-        $container->add(ParseRequestMiddleware::class)
+        $container->addShared(ParseRequestMiddleware::class)
             ->addArgument(LoggerInterface::class);
 
         $container->addServiceProvider(new ClientServiceProvider());

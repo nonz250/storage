@@ -3,19 +3,49 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Nonz250\Storage\App\Adapter\Bootstrap\Bootstrap;
+use League\Container\DefinitionContainerInterface;
+use Nonz250\Storage\App\Domain\Auth\ClientRepositoryInterface;
+use Nonz250\Storage\App\Domain\Client\Client;
+use Nonz250\Storage\App\Domain\Client\ClientFactoryInterface;
+use Nonz250\Storage\App\Domain\Client\ValueObject\AppName;
+use Nonz250\Storage\App\Domain\Client\ValueObject\ClientEmail;
+use Nonz250\Storage\App\Foundation\Model\Model;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
-use Throwable;
 
 abstract class RepositoryTestCase extends TestCase
 {
-    protected function make(string $id)
+    use RepositoryTestTrait;
+
+    protected Client $client;
+
+    private ?DefinitionContainerInterface $container = null;
+
+    protected function setUp(): void
     {
-        try {
-            return Bootstrap::settingContainers()->get($id);
-        } catch (Throwable $e) {
-            throw new RuntimeException('Failed to get container.', $e->getCode(), $e);
-        }
+        parent::setUp();
+
+        /** @var Model $model */
+        $model = $this->make(Model::class);
+        $model->beginTransaction();
+
+        /** @var ClientFactoryInterface $clientFactory */
+        $clientFactory = $this->make(ClientFactoryInterface::class);
+        $client = $clientFactory->newClient(
+            new AppName('For testing app'),
+            new ClientEmail(StringTestHelper::randomEmail()),
+        );
+
+        /** @var ClientRepositoryInterface $clientRepository */
+        $clientRepository = $this->make(ClientRepositoryInterface::class);
+        $clientRepository->create($client);
+        $this->client = $client;
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        /** @var Model $model */
+        $model = $this->make(Model::class);
+        $model->rollBack();
     }
 }

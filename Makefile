@@ -2,7 +2,11 @@ ROOT_PATH := /var/www/app
 
 # Major commands.
 .PHONY: setup
-setup: docker-build up test-up composer-install storage-link migrate ## Setup project.
+setup: configure docker-build up test-up composer-install storage-link migrate ## Setup project.
+
+.PHONY: configure
+configure: ## Configure environment file.
+	cp ./backend/.env.example ./backend/.env
 
 .PHONY: reset
 reset: clean setup ## Reset container.
